@@ -1,7 +1,7 @@
 
 var _5gon = _5gon || [];
 
-var JQUERY_URL = "//code.jquery.com/jquery-1.11.0.min.js";
+var JQUERY_URL = "js/jquery-1.11.0.min.js";
 
 (function() {
 	var script = document.createElement("script");

@@ -1,0 +1,23 @@
+<html>
+	<head>
+		<script src="js/loader.js" type="application/javascript"></script>
+		<script>
+			_5gon.push(function(loaded) {
+				loaded("$", "HelloText").then(function($, HelloText) {
+					var $body = $("body");
+					
+					$body.css("background", "#acf");
+					
+					var hello = $("<h1>");
+					hello.text(HelloText);
+					$body.append(hello);
+				});
+			});
+			_5gon.push(function(loaded) {
+				loaded("HelloText").resolve("Hello, World!");
+			});
+		</script>
+	</head>
+	<body>
+	</body>
+</html>
