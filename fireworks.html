@@ -1,7 +1,9 @@
 <html>
 	<head>
-		<script src="js/loader.js" type="application/javascript"></script>
+		<script src="js/loader.js" type="application/javascript" async="async"></script>
+		<script src="js/applet.js" type="application/javascript" async="async"></script>
 		<script>
+			var _5gon = _5gon || [];
 			_5gon.push(function(loaded) {
 				loaded("$", "HelloText").then(function($, HelloText) {
 					var $body = $("body");
@@ -16,8 +18,31 @@
 			_5gon.push(function(loaded) {
 				loaded("HelloText").resolve("Hello, World!");
 			});
+			_5gon.push(function(loaded) {
+				loaded("$", "Applet").then(function($, Applet) {
+					var $gameCanvas = $("#gameCanvas");
+					var applet = new Applet($gameCanvas);
+					
+					applet.keys.mapKey(37, "left");
+					applet.keys.mapKey(38, "up");
+					applet.keys.mapKey(39, "right");
+					
+					window.setInterval(function() {
+						var cx = applet.context;
+						var k = applet.keys;
+						
+						var red = k.left ? 255 : 0;
+						var green = k.up ? 255 : 0;
+						var blue = k.right ? 255 : 0;
+						
+						cx.fillStyle = "rgb("+red+","+green+","+blue+")";
+						cx.fillRect(0,0, applet.width, applet.height);
+					}, 1000/60);
+				});
+			});
 		</script>
 	</head>
 	<body>
+		<canvas id="gameCanvas" width="600" height="400"></canvas>
 	</body>
 </html>
