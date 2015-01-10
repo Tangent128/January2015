@@ -2,21 +2,37 @@
 	<head>
 		<script src="js/loader.js" type="application/javascript" async="async"></script>
 		<script src="js/applet.js" type="application/javascript" async="async"></script>
+		<script src="js/entity.js" type="application/javascript" async="async"></script>
 		<script>
 			var _5gon = _5gon || [];
 			_5gon.push(function(loaded) {
-				loaded("$", "HelloText").then(function($, HelloText) {
-					var $body = $("body");
+				var debug = function(txt) {
+					if(console && console.log) {
+						console.log(txt)
+					}
+				}
+				loaded("EntitySet", "Entity").then(function(EntitySet, Entity) {
+					var set = new EntitySet();
 					
-					$body.css("background", "#acf");
+					var a = new Entity();
+					a.label = "a";
+					var b = new Entity();
+					b.label = "b";
+					var c = new Entity();
+					c.label = "c";
 					
-					var hello = $("<h1>");
-					hello.text(HelloText);
-					$body.append(hello);
+					set.add(a); // A
+					set.add(b); // A B
+					set.add(c); // A B C
+					
+					set.remove(a); // B C
+					set.remove(b); // C
+					
+					set.add(a); // C A
+					set.add(c); // C A
+					
+					debug("set functions didn't crash");
 				});
-			});
-			_5gon.push(function(loaded) {
-				loaded("HelloText").resolve("Hello, World!");
 			});
 			_5gon.push(function(loaded) {
 				loaded("$.ready", "Applet").then(function($, Applet) {
