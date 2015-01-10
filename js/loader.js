@@ -4,6 +4,14 @@ var _5gon = _5gon || [];
 var JQUERY_URL = "js/jquery-1.11.0.min.js";
 
 (function() {
+	
+	function PushProcessor(backlog, push) {
+		this.push = push;
+		for(var i = 0; i < backlog.length; i++) {
+			push(backlog[i]);
+		}
+	};
+	
 	var script = document.createElement("script");
 	script.src = JQUERY_URL;
 	script.onload = function() {
@@ -28,14 +36,7 @@ var JQUERY_URL = "js/jquery-1.11.0.min.js";
 		}
 		loaded("$").resolve($);
 		
-		var queue = _5gon;
-		_5gon = {
-			push: function(callback) {
-				callback(loaded);
-			}
-		};
-		
-		$.each(queue, function(i, callback) {
+		_5gon = new PushProcessor(_5gon, function(callback) {
 			callback(loaded);
 		});
 		
