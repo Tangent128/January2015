@@ -6,9 +6,12 @@
 		<script>
 			var _5gon = _5gon || [];
 			_5gon.push(function(loaded) {
-				var debug = function(txt) {
+				var debug = function(txt, set) {
 					if(console && console.log) {
 						console.log(txt)
+						set.each(function(entity) {
+							console.log(entity.label);
+						});
 					}
 				}
 				loaded("EntitySet", "Entity").then(function(EntitySet, Entity) {
@@ -25,13 +28,17 @@
 					set.add(b); // A B
 					set.add(c); // A B C
 					
+					debug("added all to set; set contents:", set);
+					
 					set.remove(a); // B C
 					set.remove(b); // C
+					
+					debug("removed some from set; set contents:", set);
 					
 					set.add(a); // C A
 					set.add(c); // C A
 					
-					debug("set functions didn't crash");
+					debug("set functions didn't crash; set contents:", set);
 				});
 			});
 			_5gon.push(function(loaded) {
