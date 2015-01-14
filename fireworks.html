@@ -3,6 +3,7 @@
 		<script src="js/loader.js" type="application/javascript" async="async"></script>
 		<script src="js/applet.js" type="application/javascript" async="async"></script>
 		<script src="js/entity.js" type="application/javascript" async="async"></script>
+		<script src="js/fireworks.js" type="application/javascript" async="async"></script>
 		<script>
 			var _5gon = _5gon || [];
 			_5gon.push(function(loaded) {
@@ -42,13 +43,23 @@
 				});
 			});
 			_5gon.push(function(loaded) {
-				loaded("$.ready", "Applet").then(function($, Applet) {
+				loaded("$.ready", "Applet", "Fireworks", "EntitySet", "Entity").then(
+				function($, Applet, Fireworks, EntitySet, Entity) {
 					var $gameCanvas = $("#gameCanvas");
 					var applet = new Applet($gameCanvas);
 					
 					applet.keys.mapKey(37, "left");
 					applet.keys.mapKey(38, "up");
 					applet.keys.mapKey(39, "right");
+					
+					// make some sparks
+					var sparks = new EntitySet();
+					for(var i = 0; i < 99; i++) {
+						var spark = new Entity();
+						spark.x = Math.random() * 400;
+						spark.y = Math.random() * 400;
+						sparks.add(spark);
+					}
 					
 					window.setInterval(function() {
 						var cx = applet.context;
@@ -58,8 +69,12 @@
 						var green = k.up ? 255 : 0;
 						var blue = k.right ? 255 : 0;
 						
+						// render
 						cx.fillStyle = "rgb("+red+","+green+","+blue+")";
 						cx.fillRect(0,0, applet.width, applet.height);
+						
+						Fireworks.SparkRenderSystem(sparks, cx);
+						
 					}, 1000/60);
 				});
 			});
