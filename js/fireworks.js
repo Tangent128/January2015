@@ -1,13 +1,19 @@
 var _5gon = _5gon || [];
 _5gon.push(function(loaded) {
 	
-    function SparkPhysicsSystem(set) {
-        set.each(function(spark) {
-           spark.location.x += spark.velocity.x;
-           spark.location.y += spark.velocity.y;
-        });
+	function GravitySystem(set, g) {
+		set.each(function(entity) {
+			entity.velocity.y += g;
+		});
     };
-                 
+	
+	function PhysicsSystem(set) {
+		set.each(function(entity) {
+			entity.location.x += entity.velocity.x;
+			entity.location.y += entity.velocity.y;
+		});
+    };
+		 
 	function SparkRenderSystem(set, cx) {
 		set.each(function(spark) {
 			cx.fillStyle = "#f00";
@@ -17,8 +23,9 @@ _5gon.push(function(loaded) {
 	
 	/* Exports */
 	loaded("Fireworks").resolve({
-                                SparkRenderSystem: SparkRenderSystem,
-                                SparkPhysicsSystem: SparkPhysicsSystem
-                                       });
+		SparkRenderSystem: SparkRenderSystem,
+		PhysicsSystem: PhysicsSystem,
+		GravitySystem: GravitySystem
+	});
 	
 });
