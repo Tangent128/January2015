@@ -33,6 +33,7 @@ _5gon.push(function(loaded) {
     
 	function Entity() {
 	    this.id = idCounter++;
+        this.location = {};
 	};
 
 	/* Exports */
