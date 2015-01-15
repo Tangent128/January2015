@@ -43,7 +43,7 @@
 				});
 			});
 			_5gon.push(function(loaded) {
-				loaded("$.ready", "Applet", "Fireworks", "EntitySet", "Entity").then(
+                loaded("$.ready", "Applet", "Fireworks", "EntitySet", "Entity").then(
 				function($, Applet, Fireworks, EntitySet, Entity) {
 					var $gameCanvas = $("#gameCanvas");
 					var applet = new Applet($gameCanvas);
@@ -77,6 +77,7 @@
 						cx.fillStyle = "rgb("+red+","+green+","+blue+")";
 						cx.fillRect(0,0, applet.width, applet.height);
 						
+                        Fireworks.SparkPhysicsSystem(sparks);
 						Fireworks.SparkRenderSystem(sparks, cx);
 						
 					}, 1000/60);
