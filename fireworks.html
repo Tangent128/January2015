@@ -57,8 +57,11 @@
 					for(var i = 0; i < 99; i++) {
 						var spark = new Entity();
                         spark.location = {};
+                        spark.velocity = {};
 						spark.location.x = Math.random() * 400;
 						spark.location.y = Math.random() * 400;
+                        spark.velocity.x = (Math.random() * 20) - 10;
+                        spark.velocity.y = (Math.random() * 20) - 10;
 						sparks.add(spark);
 					}
 					
