@@ -23,9 +23,17 @@ _5gon.push(function(loaded) {
 		}
 	    };
 	    
-	    this.each = function(callback) {
+	    this.each = function(filter, callback) {
+		
+		if((typeof filter) != "string") {
+		    callback = filter;
+		    filter = "id"; // all entities have an id
+		}
+		
 		$.each(entityList, function() {
-		    callback(this);
+		    if(this[filter]) {
+			callback(this);
+		    }
 		});
 	    };
 
