@@ -4,13 +4,14 @@ _5gon.push(function(loaded) {
 	loaded("Entities").then(function(Entities) {
 		function GravitySystem(set, g) {
 			set.each("velocity", function(entity) {
-                entity.velocity = new Entities.Velocity(entity.velocity.x, entity.velocity.y + g);
+                entity.velocity.y += g;
 			});
 		};
 		
 		function PhysicsSystem(set) {
 			set.each("velocity", function(entity) {
-                entity.location = new Entities.Location(entity.location.x + entity.velocity.x, entity.location.y + entity.velocity.y);
+				entity.location.x += entity.velocity.x;
+				entity.location.y += entity.velocity.y;
 			});
 		};
 			 
