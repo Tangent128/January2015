@@ -49,6 +49,16 @@ _5gon.push(function(loaded) {
 	    this.id = idCounter++;
 	};
 
+    function Location(x, y) {
+        this.x = x;
+        this.y = y;
+    };
+                     
+    function Velocity(x, y) {
+        this.x = x;
+        this.y = y;
+    };
+                     
 	function Timer(interval, randomAdd) {
 	    this.countdown = 0;
 	    this.resetTo = interval || 0;
@@ -100,6 +110,9 @@ _5gon.push(function(loaded) {
 	    Entity: Entity,
 	    EntitySet: EntitySet,
 
+        Location: Location,
+        Velocity: Velocity,
+                               
 	    Timer: Timer,
 	    TimerTickSystem: TimerTickSystem,
 	    TimerExpireSystem: TimerExpireSystem

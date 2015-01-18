@@ -54,25 +54,9 @@
 					
 					// make some sparks
 					var sparks = new Entities.EntitySet();
-					/*for(var i = 0; i < 99; i++) {
-						var spark = new Entities.Entity();
-						spark.location = {};
-						spark.velocity = {};
-						spark.location.x = 300;
-						spark.location.y = 30;
-						spark.velocity.x = (Math.random() * 8) - 4;
-						spark.velocity.y = (Math.random() * 8) - 4;
-						spark.timer = new Entities.Timer(1);
-						spark.dieOnTimeout = true;
-						sparks.add(spark);
-					}*/
 					var rocket = new Entities.Entity();
-					rocket.location = {};
-					rocket.velocity = {};
-					rocket.location.x = 300;
-					rocket.location.y = 30;
-					rocket.velocity.x = 0;
-					rocket.velocity.y = -3;
+                    rocket.location = new Entities.Location(300, 30);
+                    rocket.velocity = new Entities.Velocity(0, -3);
 					rocket.timer = new Entities.Timer(1);
 					rocket.dieOnTimeout = true;
 					rocket.isRocket = true;
