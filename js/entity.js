@@ -4,6 +4,8 @@ _5gon.push(function(loaded) {
     var idCounter = 0;
 
     loaded("$").then(function($) {
+	
+	/*** Data Structures ***/
 	function EntitySet() {
 	    var self = this;
 	    var memberSet = {};
@@ -36,6 +38,10 @@ _5gon.push(function(loaded) {
 		    }
 		});
 	    };
+	    
+	    this.get = function(index) {
+		return entityList[index];
+	    };
 
 	};
     
@@ -43,7 +49,63 @@ _5gon.push(function(loaded) {
 	    this.id = idCounter++;
 	};
 
-	/* Exports */
+	function Timer(interval, randomAdd) {
+	    this.countdown = 0;
+	    this.resetTo = interval || 0;
+	    this.resetRandom = randomAdd || 0;
+	};
+
+
+	/*** Systems ***/
+
+	function TimerTickSystem(set, timeStep, componentName) {
+	    set.each(componentName || "timer", function(entity) {
+		var t = entity.timer;
+		if(t.countdown == 0) {
+		    if(t.resetTo > 0) {
+			t.countdown = t.resetTo;
+			if(t.resetRandom > 0) {
+			    t.countdown += t.resetRandom * Math.random();
+			}
+		    }
+		} else {
+		    t.countdown -= timeStep;
+		    if(t.countdown <= 0) {
+			t.countdown = 0;
+		    }
+		}
+	    });
+	};
+
+	function TimerExpireSystem(set) {
+	    var dead = [];
+	    // remember: deleting items from a collection
+	    // while you are iterating over it ends badly
+	    set.each("dieOnTimeout", function(entity) {
+		var t = entity.timer;
+		if(t.countdown == 0) {
+		    dead.push(entity);
+		}
+	    });
+	    
+	    // safe to delete items now
+	    $.each(dead, function() {
+		set.remove(this);
+	    });
+	};
+	
+
+	/*** Exports ***/
+	loaded("Entities").resolve({
+	    Entity: Entity,
+	    EntitySet: EntitySet,
+
+	    Timer: Timer,
+	    TimerTickSystem: TimerTickSystem,
+	    TimerExpireSystem: TimerExpireSystem
+	});
+	
+	// deprecated, use above exported object instead
 	loaded("EntitySet").resolve(EntitySet);
 	loaded("Entity").resolve(Entity);
 

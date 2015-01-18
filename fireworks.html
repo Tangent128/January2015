@@ -43,8 +43,8 @@
 				});
 			});
 			_5gon.push(function(loaded) {
-				loaded("$.ready", "Applet", "Fireworks", "EntitySet", "Entity").then(
-				function($, Applet, Fireworks, EntitySet, Entity) {
+				loaded("$.ready", "Applet", "Fireworks", "Entities").then(
+				function($, Applet, Fireworks, Entities) {
 					var $gameCanvas = $("#gameCanvas");
 					var applet = new Applet($gameCanvas);
 					
@@ -53,18 +53,21 @@
 					applet.keys.mapKey(39, "right");
 					
 					// make some sparks
-					var sparks = new EntitySet();
+					var sparks = new Entities.EntitySet();
 					for(var i = 0; i < 99; i++) {
-						var spark = new Entity();
+						var spark = new Entities.Entity();
 						spark.location = {};
 						spark.velocity = {};
 						spark.location.x = 300;
 						spark.location.y = 30;
 						spark.velocity.x = (Math.random() * 8) - 4;
 						spark.velocity.y = (Math.random() * 8) - 4;
+						spark.timer = new Entities.Timer(1);
+						spark.dieOnTimeout = true;
 						sparks.add(spark);
 					}
 					
+					var tickLength = 1/60;
 					window.setInterval(function() {
 						var cx = applet.context;
 						var k = applet.keys;
@@ -74,8 +77,12 @@
 						var blue = k.right ? 255 : 0;
 						
 						// physics
+						Entities.TimerTickSystem(sparks, tickLength);
 						Fireworks.GravitySystem(sparks, 0.1);
 						Fireworks.PhysicsSystem(sparks);
+						
+						// cleanup
+						Entities.TimerExpireSystem(sparks);
 						
 						// render
 						cx.fillStyle = "rgb("+red+","+green+","+blue+")";
@@ -83,7 +90,7 @@
 						
 						Fireworks.SparkRenderSystem(sparks, cx);
 						
-					}, 1000/60);
+					}, tickLength*1000);
 				});
 			});
 		</script>
