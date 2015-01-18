@@ -15,12 +15,19 @@ _5gon.push(function(loaded) {
 		};
 			 
 		function SparkRenderSystem(set, cx) {
-			set.each(function(spark) {
+			set.each("isSpark", function(spark) {
 				cx.fillStyle = "#f00";
-				cx.fillRect(spark.location.x, spark.location.y, 16, 16);
+				cx.fillRect(spark.location.x, spark.location.y, 4, 4);
 			});
 		};
 			   
+		function RocketRenderSystem(set, cx) {
+			set.each("isRocket", function(rocket) {
+				cx.fillStyle = "#88f";
+				cx.fillRect(rocket.location.x, rocket.location.y, 12, 12);
+			});
+		};
+		
 		function RocketDetonationSystem(set) {
 			   set.each(function(entity) {
 					if (entity.isRocket && entity.timer.countdown == 0) {
@@ -47,6 +54,7 @@ _5gon.push(function(loaded) {
 		/* Exports */
 		loaded("Fireworks").resolve({
 			SparkRenderSystem: SparkRenderSystem,
+			RocketRenderSystem: RocketRenderSystem,
 			PhysicsSystem: PhysicsSystem,
 			GravitySystem: GravitySystem,
 			RocketDetonationSystem: RocketDetonationSystem
