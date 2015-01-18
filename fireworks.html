@@ -54,7 +54,7 @@
 					
 					// make some sparks
 					var sparks = new Entities.EntitySet();
-					for(var i = 0; i < 99; i++) {
+					/*for(var i = 0; i < 99; i++) {
 						var spark = new Entities.Entity();
 						spark.location = {};
 						spark.velocity = {};
@@ -65,7 +65,18 @@
 						spark.timer = new Entities.Timer(1);
 						spark.dieOnTimeout = true;
 						sparks.add(spark);
-					}
+					}*/
+					var rocket = new Entities.Entity();
+					rocket.location = {};
+					rocket.velocity = {};
+					rocket.location.x = 300;
+					rocket.location.y = 30;
+					rocket.velocity.x = 0;
+					rocket.velocity.y = -3;
+					rocket.timer = new Entities.Timer(1);
+					rocket.dieOnTimeout = true;
+					rocket.isRocket = true;
+					sparks.add(rocket);
 					
 					var tickLength = 1/60;
 					window.setInterval(function() {
@@ -78,8 +89,11 @@
 						
 						// physics
 						Entities.TimerTickSystem(sparks, tickLength);
+						
 						Fireworks.GravitySystem(sparks, 0.1);
 						Fireworks.PhysicsSystem(sparks);
+						
+						Fireworks.RocketDetonationSystem(sparks);
 						
 						// cleanup
 						Entities.TimerExpireSystem(sparks);
