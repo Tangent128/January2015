@@ -8,7 +8,7 @@ _5gon.push(function(loaded) {
     };
 	
 	function PhysicsSystem(set) {
-		set.each(function(entity) {
+		set.each("velocity", function(entity) {
 			entity.location.x += entity.velocity.x;
 			entity.location.y += entity.velocity.y;
 		});
