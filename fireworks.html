@@ -52,11 +52,11 @@
 					applet.keys.mapKey(38, "up");
 					applet.keys.mapKey(39, "right");
 					
-					// make some sparks
+					// make some rockets
 					var sparks = new Entities.EntitySet();
 					var rocket = new Entities.Entity();
-                    rocket.location = new Entities.Location(300, 30);
-                    rocket.velocity = new Entities.Velocity(0, -3);
+                    rocket.location = new Entities.Location(300, 400);
+                    rocket.velocity = new Entities.Velocity(-1, -8);
 					rocket.timer = new Entities.Timer(1);
 					rocket.dieOnTimeout = true;
 					rocket.isRocket = true;
@@ -77,6 +77,7 @@
 						Fireworks.GravitySystem(sparks, 0.1);
 						Fireworks.PhysicsSystem(sparks);
 						
+						Fireworks.RocketTrailSystem(sparks);
 						Fireworks.RocketDetonationSystem(sparks);
 						
 						// cleanup

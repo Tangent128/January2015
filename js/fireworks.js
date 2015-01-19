@@ -29,6 +29,20 @@ _5gon.push(function(loaded) {
 			});
 		};
 		
+		function RocketTrailSystem(set) {
+			set.each("isRocket", function(rocket) {
+				if(Math.random() < 0.5) {
+					var spark = new Entities.Entity();
+					spark.location = new Entities.Location(rocket.location.x, rocket.location.y);
+					// Sparks are made to radiate out
+					spark.velocity = new Entities.Velocity(rocket.velocity.x + (Math.random()*2 - 1), rocket.velocity.y * 0.5);
+					spark.timer = new Entities.Timer(1);
+					spark.isSpark = true;
+					set.add(spark);
+				}
+			});
+		};
+		
 		function RocketDetonationSystem(set) {
 			   set.each(function(entity) {
 					if (entity.isRocket && entity.timer.countdown == 0) {
@@ -58,6 +72,7 @@ _5gon.push(function(loaded) {
 			RocketRenderSystem: RocketRenderSystem,
 			PhysicsSystem: PhysicsSystem,
 			GravitySystem: GravitySystem,
+			RocketTrailSystem: RocketTrailSystem,
 			RocketDetonationSystem: RocketDetonationSystem
 		});
 	});
