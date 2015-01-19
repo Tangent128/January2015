@@ -47,13 +47,13 @@ _5gon.push(function(loaded) {
 			   set.each(function(entity) {
 					if (entity.isRocket && entity.timer.countdown == 0) {
 						// Randomly make n^2 sparks where 4 <= n <= 8
-						var baseNumber = Math.floor(Math.random() * (8 - 4 + 1)) + 4;
+						var baseNumber = Math.floor((Math.random() * (18 - 12 + 1)) + 12);
 						var particleCount = baseNumber * baseNumber;
 						var radianIncrement = 2 * Math.PI / (particleCount);
 					
-                        var scalingFactor = Math.random();
 						for(var i = 0; i < (particleCount); i++) {
-							var spark = new Entities.Entity();
+                            var scalingFactor = Math.random();
+                            var spark = new Entities.Entity();
                             spark.location = new Entities.Location(entity.location.x, entity.location.y);
 							// Sparks are made to radiate out
                             spark.velocity = new Entities.Velocity(entity.velocity.x + (scalingFactor * (2 * Math.cos(radianIncrement * i))), entity.velocity.y + (scalingFactor * (2 * Math.sin(radianIncrement * i))));
