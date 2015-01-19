@@ -51,11 +51,12 @@ _5gon.push(function(loaded) {
 						var particleCount = baseNumber * baseNumber;
 						var radianIncrement = 2 * Math.PI / (particleCount);
 					
-						for(var i = 0; i < (particleCount - 1); i++) {
+                        var scalingFactor = Math.random();
+						for(var i = 0; i < (particleCount); i++) {
 							var spark = new Entities.Entity();
                             spark.location = new Entities.Location(entity.location.x, entity.location.y);
 							// Sparks are made to radiate out
-                            spark.velocity = new Entities.Velocity(entity.velocity.x + (2 * Math.cos(radianIncrement * i)), entity.velocity.y + (2 * Math.sin(radianIncrement * i)));
+                            spark.velocity = new Entities.Velocity(entity.velocity.x + (scalingFactor * (2 * Math.cos(radianIncrement * i))), entity.velocity.y + (scalingFactor * (2 * Math.sin(radianIncrement * i))));
 							// Die in 3 seconds
 							spark.timer = new Entities.Timer(3);
 							spark.isSpark = true;
