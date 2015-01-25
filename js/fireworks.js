@@ -52,8 +52,8 @@ _5gon.push(function(loaded) {
 						var radianIncrement = 2 * Math.PI / (particleCount);
                         var scalingFactor = 0;
 						for(var i = 0; i < (particleCount); i++) {
-                            scalingFactor = Math.sqrt(Math.random());
-                            //scalingFactor = (1 - Math.pow(Math.random, 2));
+                            //scalingFactor = Math.sqrt(Math.random());
+                            scalingFactor = (1 - Math.pow(Math.random(), 4));
                             var spark = new Entities.Entity();
                             spark.location = new Entities.Location(entity.location.x, entity.location.y);
 							// Sparks are made to radiate out
