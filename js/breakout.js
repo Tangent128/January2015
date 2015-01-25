@@ -1,6 +1,15 @@
 var _5gon = _5gon || [];
 _5gon.push(function(loaded) {
            
+           /* Global State container */
+           
+           function GameState() {
+                 this.score = 0;
+                 this.mode = "intro"; // intro, playing, won, lost
+            };
+           
+           /* Components */
+           
            function Color(r, g, b) {
                 this.r = r;
                 this.g = g;
@@ -18,8 +27,10 @@ _5gon.push(function(loaded) {
                 this.mode = mode;
            }
            
-           loaded("Entities").then(function(Entities) {
-            };
+           /* Systems */
+           
+//           loaded("Entities").then(function(Entities) {
+//           };
            
            function MoveObjectSystem() {
            };
@@ -38,5 +49,11 @@ _5gon.push(function(loaded) {
            
            function MessagingSystem() {
            };
+           
+           function SpriteRenderSystem() {
+            };
+
+           function BlockRenderSystem() {
+            };
            
 });
