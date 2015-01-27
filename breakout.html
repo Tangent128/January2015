@@ -27,6 +27,8 @@
 						var block = new Entities.Entity();
 						block.bounds = new Breakout.CollisionRectangle(x, y, w, h);
 						block.color = new Breakout.Color(r, g, b);
+						block.isBlock = true;
+						blocks.add(block);
 					};
 					
 					addBlock(0,0,500,50, 200,0,255);
