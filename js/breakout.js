@@ -53,5 +53,11 @@ _5gon.push(function(loaded) {
 
            function BlockRenderSystem() {
             };
+            
+            loaded("Breakout").resolve({
+                  Color: Color,
+                  CollisionRectangle: CollisionRectangle,
+                  BlockRenderSystem: BlockRenderSystem
+            });
            
 });

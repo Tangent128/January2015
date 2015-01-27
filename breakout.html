@@ -15,20 +15,34 @@
 						});
 					}
 				}
-				loaded("EntitySet", "Entity").then(function(EntitySet, Entity) {
-                    // Put Debug Here
-
-			});
-			_5gon.push(function(loaded) {
+				
 				loaded("$.ready", "Applet", "Breakout", "Entities").then(
 				function($, Applet, Breakout, Entities) {
 					var $gameCanvas = $("#gameCanvas");
 					var applet = new Applet($gameCanvas);
 					
+					var blocks = new Entities.EntitySet();
+					
+					function addBlock(x,y,w,h, r,g,b) {
+						var block = new Entities.Entity();
+						block.bounds = new Breakout.CollisionRectangle(x, y, w, h);
+						block.color = new Breakout.Color(r, g, b);
+					};
+					
+					addBlock(0,0,500,50, 200,0,255);
+					addBlock(0,50,50,500, 255,255,200);
+					addBlock(100,100,100,100, 255,200,100);
+					
 					var tickLength = 1/60;
 					window.setInterval(function() {
 						var cx = applet.context;
 						var k = applet.keys;
+						
+						// render
+						cx.fillStyle = "#eee";
+						cx.fillRect(0,0, applet.width, applet.height);
+						
+						Breakout.BlockRenderSystem(blocks, cx);
 						
 					}, tickLength*1000);
 				});
