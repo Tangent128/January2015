@@ -62,7 +62,7 @@ _5gon.push(function(loaded) {
                             }
                          cx.fillRect(block.bounds.x, block.bounds.y, block.bounds.w, block.bounds.h);
                          }
-                         });
+                });
            };
 
             loaded("Breakout").resolve({
