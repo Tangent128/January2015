@@ -53,12 +53,22 @@ _5gon.push(function(loaded) {
 
            function BlockRenderSystem(set, cx) {
            
+                function Pad(string) {
+                    if (string.length < 2) {
+                        return "0" + string;
+                    }
+                    return string;
+                };
+           
                 set.each("isBlock", function(block) {
                          // If no location or bounds, don't bother
                          if (block.bounds && block.color) {
                             // Fill white, then attempt to assign a color if one exists
                             if (block.color) {
-                            cx.fillStyle = "#" + ((block.color.r).toString(16)) + ((block.color.g).toString(16)) + ((block.color.b).toString(16));
+                                var red = Pad((block.color.r).toString(16));
+                                var green = Pad((block.color.g).toString(16));
+                                var blue = Pad((block.color.b).toString(16));
+                                cx.fillStyle = "#" + red + green + blue;
                             }
                          cx.fillRect(block.bounds.x, block.bounds.y, block.bounds.w, block.bounds.h);
                          }
