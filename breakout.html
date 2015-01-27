@@ -1,0 +1,103 @@
+<html>
+	<head>
+		<script src="js/loader.js" type="application/javascript" async="async"></script>
+		<script src="js/applet.js" type="application/javascript" async="async"></script>
+		<script src="js/entity.js" type="application/javascript" async="async"></script>
+		<script src="js/fireworks.js" type="application/javascript" async="async"></script>
+		<script>
+			var _5gon = _5gon || [];
+			_5gon.push(function(loaded) {
+				var debug = function(txt, set) {
+					if(console && console.log) {
+						console.log(txt)
+						set.each(function(entity) {
+							console.log(entity.label);
+						});
+					}
+				}
+				loaded("EntitySet", "Entity").then(function(EntitySet, Entity) {
+                    // Put Debug Here
+                                                   
+                    /*var set = new EntitySet();
+					
+					var a = new Entity();
+					a.label = "a";
+					var b = new Entity();
+					b.label = "b";
+					var c = new Entity();
+					c.label = "c";
+					
+					set.add(a); // A
+					set.add(b); // A B
+					set.add(c); // A B C
+					
+					debug("added all to set; set contents:", set);
+					
+					set.remove(a); // B C
+					set.remove(b); // C
+					
+					debug("removed some from set; set contents:", set);
+					
+					set.add(a); // C A
+					set.add(c); // C A
+					
+					debug("set functions didn't crash; set contents:", set);
+				});*/
+			});
+			_5gon.push(function(loaded) {
+				loaded("$.ready", "Applet", "Breakout", "Entities").then(
+				function($, Applet, Breakout, Entities) {
+					var $gameCanvas = $("#gameCanvas");
+					var applet = new Applet($gameCanvas);
+					
+					/*applet.keys.mapKey(37, "left");
+					applet.keys.mapKey(38, "up");
+					applet.keys.mapKey(39, "right");
+					
+					// make some rockets
+					var sparks = new Entities.EntitySet();
+					var rocket = new Entities.Entity();
+                    rocket.location = new Entities.Location(300, 400);
+                    rocket.velocity = new Entities.Velocity(-1, -8);
+					rocket.timer = new Entities.Timer(1);
+					rocket.dieOnTimeout = true;
+					rocket.isRocket = true;
+					sparks.add(rocket);*/
+					
+					var tickLength = 1/60;
+					window.setInterval(function() {
+						var cx = applet.context;
+						var k = applet.keys;
+						
+						/*var red = k.left ? 255 : 0;
+						var green = k.up ? 255 : 0;
+						var blue = k.right ? 255 : 0;
+						
+						// physics
+						Entities.TimerTickSystem(sparks, tickLength);
+						
+						Fireworks.GravitySystem(sparks, 0.1);
+						Fireworks.PhysicsSystem(sparks);
+						
+						Fireworks.RocketTrailSystem(sparks);
+						Fireworks.RocketDetonationSystem(sparks);
+						
+						// cleanup
+						Entities.TimerExpireSystem(sparks);
+						
+						// render
+						cx.fillStyle = "rgb("+red+","+green+","+blue+")";
+						cx.fillRect(0,0, applet.width, applet.height);
+						
+						Fireworks.SparkRenderSystem(sparks, cx);
+						Fireworks.RocketRenderSystem(sparks, cx);
+						*/
+					}, tickLength*1000);
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<canvas id="gameCanvas" width="600" height="400"></canvas>
+	</body>
+</html>

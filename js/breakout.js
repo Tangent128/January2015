@@ -28,9 +28,7 @@ _5gon.push(function(loaded) {
            }
            
            /* Systems */
-           
-//           loaded("Entities").then(function(Entities) {
-//           };
+
            
            function MoveObjectSystem() {
            };
