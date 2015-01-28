@@ -42,6 +42,10 @@
 						var k = applet.keys;
 
                         Breakout.MoveObjectSystem(blocks);
+                        Breakout.WallCollisionSystem(blocks, {
+							x: 0,
+							w: applet.width
+						});
                                        
 						// render
 						cx.fillStyle = "#eee";

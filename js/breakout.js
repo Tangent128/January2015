@@ -43,8 +43,22 @@ _5gon.push(function(loaded) {
            function BallCollisionSystem() {
            };
            
-           function WallCollisionSystem() {
-           };
+            function WallCollisionSystem(set, field) {
+                  
+                  function xBounce(entity, newX) {
+                        entity.bounds.x = newX;
+                        entity.velocity.x *= -1;
+                  }
+                  
+                  set.each("velocity", function(entity) {
+                        var b = entity.bounds;
+                        if(b.x < field.x) {
+                              xBounce(entity, field.x);
+                        } else if(b.x + b.w > field.x + field.w) {
+                              xBounce(entity, field.x + field.w - b.w);
+                        }
+                  });
+            };
            
            function ReaperSystem() {
            };
@@ -85,8 +99,10 @@ _5gon.push(function(loaded) {
             loaded("Breakout").resolve({
                   Color: Color,
                   CollisionRectangle: CollisionRectangle,
-                  BlockRenderSystem: BlockRenderSystem,
-                  MoveObjectSystem: MoveObjectSystem
+                  
+                  MoveObjectSystem: MoveObjectSystem,
+                  WallCollisionSystem: WallCollisionSystem,
+                  BlockRenderSystem: BlockRenderSystem
             });
            
 });
