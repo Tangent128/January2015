@@ -28,6 +28,9 @@
 						block.bounds = new Breakout.CollisionRectangle(x, y, w, h);
 						block.color = new Breakout.Color(r, g, b);
 						block.isBlock = true;
+                        block.velocity = {};
+                        block.velocity.x = 5;
+                        block.velocity.y = 0;
 						blocks.add(block);
 					};
 					
@@ -39,11 +42,12 @@
 					window.setInterval(function() {
 						var cx = applet.context;
 						var k = applet.keys;
-						
+
+                        Breakout.MoveObjectSystem(blocks);
+                                       
 						// render
 						cx.fillStyle = "#eee";
 						cx.fillRect(0,0, applet.width, applet.height);
-						
 						Breakout.BlockRenderSystem(blocks, cx);
 						
 					}, tickLength*1000);

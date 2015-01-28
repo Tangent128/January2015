@@ -30,7 +30,14 @@ _5gon.push(function(loaded) {
            /* Systems */
 
            
-           function MoveObjectSystem() {
+           function MoveObjectSystem(set) {
+                set.each(function(entity) {
+                    // If no location or velocity, don't bother
+                    if (entity.velocity && entity.bounds) {
+                         entity.bounds.x += entity.velocity.x;
+                         entity.bounds.y += entity.velocity.y;
+                    }
+                    });
            };
 
            function BallCollisionSystem() {
@@ -78,7 +85,8 @@ _5gon.push(function(loaded) {
             loaded("Breakout").resolve({
                   Color: Color,
                   CollisionRectangle: CollisionRectangle,
-                  BlockRenderSystem: BlockRenderSystem
+                  BlockRenderSystem: BlockRenderSystem,
+                  MoveObjectSystem: MoveObjectSystem
             });
            
 });
