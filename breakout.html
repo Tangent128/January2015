@@ -28,9 +28,7 @@
 						block.bounds = new Breakout.CollisionRectangle(x, y, w, h);
 						block.color = new Breakout.Color(r, g, b);
 						block.isBlock = true;
-                        block.velocity = {};
-                        block.velocity.x = 5;
-                        block.velocity.y = 0;
+                        block.velocity = new Entities.Velocity(5, 0);
 						blocks.add(block);
 					};
 					

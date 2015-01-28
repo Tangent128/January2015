@@ -33,7 +33,7 @@ _5gon.push(function(loaded) {
 		}
 		
 		$.each(entityList, function() {
-		    if(this[filter]) {
+		    if(filter in this && this[filter] !== false) {
 			callback(this);
 		    }
 		});
