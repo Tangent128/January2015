@@ -63,12 +63,30 @@ _5gon.push(function(loaded) {
            function ReaperSystem() {
            };
            
-           function PaddleControlSystem() {
+           function PaddleControlSystem(set, k) {
+           set.each("isPlayerControlled", function(block) {
+                    
+                    var up = k.up;
+                    var down = k.down;
+                    var left = k.left;
+                    var right = k.right;
+                    
+                    if (up) {
+                        block.velocity.y +=5;
+                    } else if (down) {
+                        block.velocity.y -= 5;
+                    } else if (left) {
+                        block.velocity.x -= 5;
+                    } else if (right) {
+                        block.velocity.x += 5;
+                    }
+                    
+                });
            };
-           
+
            function MessagingSystem() {
            };
-           
+
            function SpriteRenderSystem() {
             };
 
@@ -102,7 +120,8 @@ _5gon.push(function(loaded) {
                   
                   MoveObjectSystem: MoveObjectSystem,
                   WallCollisionSystem: WallCollisionSystem,
-                  BlockRenderSystem: BlockRenderSystem
+                  BlockRenderSystem: BlockRenderSystem,
+                  PaddleControlSystem: PaddleControlSystem
             });
            
 });
