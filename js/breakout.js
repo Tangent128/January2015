@@ -66,19 +66,15 @@ _5gon.push(function(loaded) {
            function PaddleControlSystem(set, k) {
            set.each("isPlayerControlled", function(block) {
                     
-                    var up = k.up;
-                    var down = k.down;
                     var left = k.left;
                     var right = k.right;
                     
-                    if (up) {
-                        block.velocity.y +=5;
-                    } else if (down) {
-                        block.velocity.y -= 5;
-                    } else if (left) {
-                        block.velocity.x -= 5;
+                     if (left) {
+                        block.velocity.x = -5;
                     } else if (right) {
-                        block.velocity.x += 5;
+                        block.velocity.x = 5;
+                    } else {
+                        block.velocity.x = 0;
                     }
                     
                 });
