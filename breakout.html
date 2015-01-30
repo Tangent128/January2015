@@ -33,10 +33,23 @@
                         blocks.add(block);
 					};
 					
+                    function addBall(x, y, radius, r, g, b) {
+                        var ball = new Entities.Entity();
+                        ball.position = {};
+                        ball.position.x = x;
+                        ball.position.y = y;
+                        ball.radius = radius;
+                        ball.color = new Breakout.Color(r, g, b);
+                        ball.isBall = true;
+                        blocks.add(ball);
+                    };
+                                                                         
 					addBlock(0,0,500,50, 200,0,255);
 					addBlock(0,50,50,500, 255,255,200);
 					addBlock(100,100,100,100, 255,200,100);
 					
+                    addBall(200, 200, 10, 255, 0, 0);
+                                                                         
                     applet.keys.mapKey(37, "left");
                     applet.keys.mapKey(39, "right");
                                                                          
@@ -56,6 +69,7 @@
 						cx.fillStyle = "#eee";
 						cx.fillRect(0,0, applet.width, applet.height);
 						Breakout.BlockRenderSystem(blocks, cx);
+                        Breakout.BallRenderSystem(blocks, cx);
 						
 					}, tickLength*1000);
 				});

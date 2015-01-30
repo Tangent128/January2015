@@ -85,6 +85,32 @@ _5gon.push(function(loaded) {
 
            function SpriteRenderSystem() {
             };
+           
+           function BallRenderSystem(set, cx) {
+           
+                function Pad(string) {
+                    if (string.length < 2) {
+                        return "0" + string;
+                    }
+                    return string;
+                };
+           
+                set.each("isBall", function(ball) {
+           
+                    if (ball.position && ball.radius && ball.color) {
+                        cx.beginPath();
+                        cx.arc(ball.position.x, ball.position.y, ball.radius, 0, 2 * Math.PI, false);
+           
+                        var red = Pad((ball.color.r).toString(16));
+                        var green = Pad((ball.color.g).toString(16));
+                        var blue = Pad((ball.color.b).toString(16));
+                        cx.fillStyle = "#" + red + green + blue;
+                        cx.fill();
+                    }
+           
+                });
+
+            };
 
            function BlockRenderSystem(set, cx) {
            
@@ -99,12 +125,10 @@ _5gon.push(function(loaded) {
                          // If no location or bounds, don't bother
                          if (block.bounds && block.color) {
                             // Fill white, then attempt to assign a color if one exists
-                            if (block.color) {
                                 var red = Pad((block.color.r).toString(16));
                                 var green = Pad((block.color.g).toString(16));
                                 var blue = Pad((block.color.b).toString(16));
                                 cx.fillStyle = "#" + red + green + blue;
-                            }
                          cx.fillRect(block.bounds.x, block.bounds.y, block.bounds.w, block.bounds.h);
                          }
                 });
@@ -117,6 +141,7 @@ _5gon.push(function(loaded) {
                   MoveObjectSystem: MoveObjectSystem,
                   WallCollisionSystem: WallCollisionSystem,
                   BlockRenderSystem: BlockRenderSystem,
+                  BallRenderSystem: BallRenderSystem,
                   PaddleControlSystem: PaddleControlSystem
             });
            
