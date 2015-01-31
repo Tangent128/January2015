@@ -109,11 +109,11 @@ _5gon.push(function(loaded) {
                               var tx = dx/vx;
                               var ty = dy/vy;
                               
-                              if(tx > ty) {
-                                    // x collision
+                              if(tx < ty) {
+                                    // collision on vertical edge, so bounce horizontally
                                     xBounce(ball, xEdge);
                               } else {
-                                    // y collision
+                                    // collision on horizontal edge, so bounce verticaly
                                     yBounce(ball, yEdge);
                               }
                              
