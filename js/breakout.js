@@ -16,7 +16,7 @@ _5gon.push(function(loaded) {
                 this.b = b;
            };
            
-           function CollisionRectangle(x, y, w, h) {
+           function Rectangle(x, y, w, h) {
                 this.x = x;
                 this.y = y;
                 this.w = w;
@@ -97,9 +97,9 @@ _5gon.push(function(loaded) {
            
                 set.each("isBall", function(ball) {
            
-                    if (ball.position && ball.radius && ball.color) {
+                    if (ball.bounds && ball.radius && ball.color) {
                         cx.beginPath();
-                        cx.arc(ball.position.x, ball.position.y, ball.radius, 0, 2 * Math.PI, false);
+                        cx.arc(ball.bounds.x + ball.radius, ball.bounds.y + ball.radius, ball.radius, 0, 2 * Math.PI, false);
            
                         var red = Pad((ball.color.r).toString(16));
                         var green = Pad((ball.color.g).toString(16));
@@ -136,7 +136,7 @@ _5gon.push(function(loaded) {
 
             loaded("Breakout").resolve({
                   Color: Color,
-                  CollisionRectangle: CollisionRectangle,
+                  Rectangle: Rectangle,
                   
                   MoveObjectSystem: MoveObjectSystem,
                   WallCollisionSystem: WallCollisionSystem,

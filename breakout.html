@@ -25,7 +25,7 @@
 					
 					function addBlock(x,y,w,h, r,g,b) {
 						var block = new Entities.Entity();
-						block.bounds = new Breakout.CollisionRectangle(x, y, w, h);
+						block.bounds = new Breakout.Rectangle(x, y, w, h);
 						block.color = new Breakout.Color(r, g, b);
 						block.isBlock = true;
                         block.velocity = new Entities.Velocity(5, 0);
@@ -35,9 +35,7 @@
 					
                     function addBall(x, y, radius, r, g, b) {
                         var ball = new Entities.Entity();
-                        ball.position = {};
-                        ball.position.x = x;
-                        ball.position.y = y;
+						ball.bounds = new Breakout.Rectangle(x, y, radius, radius);
                         ball.radius = radius;
                         ball.color = new Breakout.Color(r, g, b);
                         ball.isBall = true;
