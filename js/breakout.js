@@ -30,7 +30,7 @@ _5gon.push(function(loaded) {
            /* Systems */
 
            
-           function MoveObjectSystem(set) {
+           function VelocitySystem(set) {
                 set.each(function(entity) {
                     // If no location or velocity, don't bother
                     if (entity.velocity && entity.bounds) {
@@ -49,6 +49,10 @@ _5gon.push(function(loaded) {
                         entity.bounds.x = newX;
                         entity.velocity.x *= -1;
                   }
+                  function yBounce(entity, newY) {
+                        entity.bounds.y = newY;
+                        entity.velocity.y *= -1;
+                  }
                   
                   set.each("velocity", function(entity) {
                         var b = entity.bounds;
@@ -56,6 +60,12 @@ _5gon.push(function(loaded) {
                               xBounce(entity, field.x);
                         } else if(b.x + b.w > field.x + field.w) {
                               xBounce(entity, field.x + field.w - b.w);
+                        }
+                        
+                        if(b.y < field.y) {
+                              yBounce(entity, field.y);
+                        } else if(b.y + b.h > field.y + field.h) {
+                              yBounce(entity, field.y + field.h - b.h);
                         }
                   });
             };
@@ -138,7 +148,7 @@ _5gon.push(function(loaded) {
                   Color: Color,
                   Rectangle: Rectangle,
                   
-                  MoveObjectSystem: MoveObjectSystem,
+                  VelocitySystem: VelocitySystem,
                   WallCollisionSystem: WallCollisionSystem,
                   BlockRenderSystem: BlockRenderSystem,
                   BallRenderSystem: BallRenderSystem,

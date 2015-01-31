@@ -35,7 +35,8 @@
 					
                     function addBall(x, y, radius, r, g, b) {
                         var ball = new Entities.Entity();
-						ball.bounds = new Breakout.Rectangle(x, y, radius, radius);
+						ball.bounds = new Breakout.Rectangle(x, y, radius*2, radius*2);
+						ball.velocity = new Entities.Velocity(-3,-3);
                         ball.radius = radius;
                         ball.color = new Breakout.Color(r, g, b);
                         ball.isBall = true;
@@ -46,7 +47,7 @@
 					addBlock(0,50,50,500, 255,255,200);
 					addBlock(100,100,100,100, 255,200,100);
 					
-                    addBall(200, 200, 10, 255, 0, 0);
+                    addBall(200, 230, 10, 255, 0, 0);
                                                                          
                     applet.keys.mapKey(37, "left");
                     applet.keys.mapKey(39, "right");
@@ -57,10 +58,12 @@
 						var k = applet.keys;
 
                         Breakout.PaddleControlSystem(blocks, k);
-                        Breakout.MoveObjectSystem(blocks);
+                        Breakout.VelocitySystem(blocks);
                         Breakout.WallCollisionSystem(blocks, {
 							x: 0,
-							w: applet.width
+							y: 0,
+							w: applet.width,
+							h: applet.height
 						});
                                        
 						// render

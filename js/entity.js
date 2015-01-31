@@ -49,6 +49,8 @@ _5gon.push(function(loaded) {
 	    this.id = idCounter++;
 	};
 
+    //NOTE: in most cases, nicer to use a rectangle object
+    // instead of a point object for location
     function Location(x, y) {
         this.x = x;
         this.y = y;
