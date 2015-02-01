@@ -1,6 +1,8 @@
 var _5gon = _5gon || [];
 _5gon.push(function(loaded) {
            
+           loaded("$").then(function($) {
+           
            /* Global State container */
            
            function GameState() {
@@ -136,7 +138,7 @@ _5gon.push(function(loaded) {
                                     bav.x += blockVel.x;
                               }
                                      
-                              if (block.hitsRemaining) {
+                              if (hitsRemaining in block) {
                                      block.hitsRemaining -= 1;
                               }
                              
@@ -146,7 +148,7 @@ _5gon.push(function(loaded) {
            
            function BreakBlockSystem(set) {
                 set.each("isBlock", function(block) {
-                    if (block.hitsRemaining) {
+                    if (hitsRemaining in block) {
                          if (block.hitsRemaining == 0) {
                             block.isDead = true;
                          }
@@ -173,11 +175,15 @@ _5gon.push(function(loaded) {
             };
            
            function ReaperSystem(set) {
+           var toRemove = [];
            set.each("isDead", function(entity) {
                     if (entity.isDead) {
-                        entity.remove();
+                        toRemove.push(entity)
                     }
                 });
+           $.each(toRemove, function() {
+                  set.remove(this)
+                  })
            };
            
            function PaddleControlSystem(set, k) {
@@ -281,4 +287,5 @@ _5gon.push(function(loaded) {
                   ReaperSystem: ReaperSystem
             });
            
+        });
 });
