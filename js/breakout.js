@@ -135,10 +135,24 @@ _5gon.push(function(loaded) {
                                     yBounce(ball, yWall, blockVel.y);
                                     bav.x += blockVel.x;
                               }
+                                     
+                              if (block.hitsRemaining) {
+                                     block.hitsRemaining -= 1;
+                              }
                              
                         });
                   });
            };
+           
+           function BreakBlockSystem(set) {
+                set.each("isBlock", function(block) {
+                    if (block.hitsRemaining) {
+                         if (block.hitsRemaining == 0) {
+                            block.isDead = true;
+                         }
+                    }
+                });
+           }
            
             function WallCollisionSystem(set, field) {
                   
@@ -158,7 +172,12 @@ _5gon.push(function(loaded) {
                   });
             };
            
-           function ReaperSystem() {
+           function ReaperSystem(set) {
+           set.each("isDead", function(entity) {
+                    if (entity.isDead) {
+                        entity.remove();
+                    }
+                });
            };
            
            function PaddleControlSystem(set, k) {
@@ -254,10 +273,12 @@ _5gon.push(function(loaded) {
                   VelocityDampenSystem: VelocityDampenSystem,
                   WallCollisionSystem: WallCollisionSystem,
                   BallCollisionSystem: BallCollisionSystem,
+                  BreakBlockSystem: BreakBlockSystem,
                   BlockRenderSystem: BlockRenderSystem,
                   BallRenderSystem: BallRenderSystem,
                   PaddleControlSystem: PaddleControlSystem,
-                  MessagingSystem: MessagingSystem
+                  MessagingSystem: MessagingSystem,
+                  ReaperSystem: ReaperSystem
             });
            
 });
