@@ -23,10 +23,6 @@ _5gon.push(function(loaded) {
                 this.h = h;
            }
            
-           function Mode(mode) {
-                this.mode = mode;
-           }
-           
            /* Helpers */
            
            function rectIntersect(r1, r2) {
@@ -162,9 +158,6 @@ _5gon.push(function(loaded) {
            function MessagingSystem() {
            };
 
-           function SpriteRenderSystem() {
-            };
-           
            function BallRenderSystem(set, cx) {
            
                 function Pad(string) {
