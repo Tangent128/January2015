@@ -30,6 +30,7 @@
 						block.isBlock = true;
                         block.velocity = new Entities.Velocity(5, 0);
                         block.isPlayerControlled = true;
+                        block.hitsRemaining = 3;
                         blocks.add(block);
 					};
 					
@@ -79,6 +80,8 @@
                         Breakout.MessagingSystem(testState, cx);
 						Breakout.BlockRenderSystem(blocks, cx);
                         Breakout.BallRenderSystem(blocks, cx);
+                        Breakout.BreakBlockSystem(blocks);
+                        Breakout.ReaperSystem(blocks);
 						
 					}, tickLength*1000);
 				});
