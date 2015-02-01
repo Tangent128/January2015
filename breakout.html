@@ -61,13 +61,15 @@
 
                         Breakout.PaddleControlSystem(blocks, k);
                         Breakout.VelocitySystem(blocks);
+						Breakout.BallCollisionSystem(blocks, blocks);
                         Breakout.WallCollisionSystem(blocks, {
 							x: 0,
 							y: 0,
 							w: applet.width,
 							h: applet.height
 						});
-                                       
+						
+                                   
 						// render
 						cx.fillStyle = "#eee";
 						cx.fillRect(0,0, applet.width, applet.height);

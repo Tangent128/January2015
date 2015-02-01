@@ -23,10 +23,33 @@ _5gon.push(function(loaded) {
                 this.h = h;
            }
            
-           function Mode(mode) {
-                this.mode = mode;
-           }
+           /* Helpers */
            
+           function rectIntersect(r1, r2) {
+                  return !(
+                        (r1.x + r1.w < r2.x) || (r2.x + r2.w < r1.x)
+                        ||
+                        (r1.y + r1.h < r2.y) || (r2.y + r2.h < r1.y)
+                  );
+            }
+           
+            function xBounce(entity, xEdge) {
+                  entity.velocity.x *= -1;
+                  if(entity.velocity.x < 0) {
+                        entity.bounds.x = xEdge - entity.bounds.w;
+                  } else if(entity.velocity.x > 0) {
+                        entity.bounds.x = xEdge;
+                  }
+            }
+            function yBounce(entity, yEdge) {
+                  entity.velocity.y *= -1;
+                  if(entity.velocity.y < 0) {
+                        entity.bounds.y = yEdge - entity.bounds.h;
+                  } else if(entity.velocity.y > 0) {
+                        entity.bounds.y = yEdge;
+                  }
+            }
+      
            /* Systems */
 
            
@@ -40,32 +63,74 @@ _5gon.push(function(loaded) {
                     });
            };
 
-           function BallCollisionSystem() {
+           function BallCollisionSystem(ballSet, blockSet) {
+                 ballSet.each("isBall", function(ball) {
+                       var bab = ball.bounds;
+                       var bav = ball.velocity;
+                       
+                       blockSet.each("isBlock", function(block) {
+                             var blockBounds = block.bounds;
+                             
+                             if(!rectIntersect(bab, blockBounds)) {
+                                    return;
+                              }
+                             
+                             var blockVel = block.velocity;
+                             
+                             // determine relevant edges
+                             var vx = bav.x - blockVel.x;
+                             var vy = bav.y - blockVel.y;
+                             
+                             var xWall = blockBounds.x;
+                             var xEdge = bab.x;
+                             if(vx < 0) {
+                                    xWall += blockBounds.w;
+                              } else {
+                                    xEdge += bab.w;
+                              }
+
+                             var yWall = blockBounds.y;
+                             var yEdge = bab.y;
+                             if(vy < 0) {
+                                    yWall += blockBounds.h;
+                              } else {
+                                    yEdge += bab.h;
+                              }
+                              
+                              // calculate how long ago each axis's collision could have been
+                              
+                              var dx = xEdge - xWall;
+                              var dy = yEdge - yWall;
+                              
+                              var tx = dx/vx;
+                              var ty = dy/vy;
+                              
+                              if(tx < ty) {
+                                    // collision on vertical edge, so bounce horizontally
+                                    xBounce(ball, xEdge);
+                              } else {
+                                    // collision on horizontal edge, so bounce verticaly
+                                    yBounce(ball, yEdge);
+                              }
+                             
+                        });
+                  });
            };
            
             function WallCollisionSystem(set, field) {
-                  
-                  function xBounce(entity, newX) {
-                        entity.bounds.x = newX;
-                        entity.velocity.x *= -1;
-                  }
-                  function yBounce(entity, newY) {
-                        entity.bounds.y = newY;
-                        entity.velocity.y *= -1;
-                  }
                   
                   set.each("velocity", function(entity) {
                         var b = entity.bounds;
                         if(b.x < field.x) {
                               xBounce(entity, field.x);
                         } else if(b.x + b.w > field.x + field.w) {
-                              xBounce(entity, field.x + field.w - b.w);
+                              xBounce(entity, field.x + field.w);
                         }
                         
                         if(b.y < field.y) {
                               yBounce(entity, field.y);
                         } else if(b.y + b.h > field.y + field.h) {
-                              yBounce(entity, field.y + field.h - b.h);
+                              yBounce(entity, field.y + field.h);
                         }
                   });
             };
@@ -109,9 +174,6 @@ _5gon.push(function(loaded) {
                 }
            };
 
-           function SpriteRenderSystem() {
-            };
-           
            function BallRenderSystem(set, cx) {
            
                 function Pad(string) {
@@ -167,6 +229,7 @@ _5gon.push(function(loaded) {
                   
                   VelocitySystem: VelocitySystem,
                   WallCollisionSystem: WallCollisionSystem,
+                  BallCollisionSystem: BallCollisionSystem,
                   BlockRenderSystem: BlockRenderSystem,
                   BallRenderSystem: BallRenderSystem,
                   PaddleControlSystem: PaddleControlSystem,
