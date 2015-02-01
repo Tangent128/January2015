@@ -51,6 +51,8 @@
                                                                          
                     applet.keys.mapKey(37, "left");
                     applet.keys.mapKey(39, "right");
+                                               
+                    var testState = new Breakout.GameState();
                                                                          
 					var tickLength = 1/60;
 					window.setInterval(function() {
@@ -69,6 +71,8 @@
 						// render
 						cx.fillStyle = "#eee";
 						cx.fillRect(0,0, applet.width, applet.height);
+                        testState.mode = "intro";
+                        Breakout.MessagingSystem(testState, cx);
 						Breakout.BlockRenderSystem(blocks, cx);
                         Breakout.BallRenderSystem(blocks, cx);
 						

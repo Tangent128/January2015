@@ -90,7 +90,23 @@ _5gon.push(function(loaded) {
                 });
            };
 
-           function MessagingSystem() {
+           function MessagingSystem(gameState, cx) {
+                if (gameState.mode) {
+                    cx.fillStyle = "#ffffff";
+                    //cx.fillRect(500,500,100,100);
+                    if (gameState.mode === "won") {
+                        cx.font = "48px serif";
+                        cx.fillText("You Won", 150, 100);
+                    }
+                    if (gameState.mode === "lost") {
+                        cx.font = "48px serif";
+                        cx.fillText("You Lost", 150, 100);
+                    }
+                    if (gameState.mode === "intro") {
+                        cx.font = "48px serif";
+                        cx.fillText("Press Spacebar to Start", 150, 100);
+                    }
+                }
            };
 
            function SpriteRenderSystem() {
@@ -147,12 +163,14 @@ _5gon.push(function(loaded) {
             loaded("Breakout").resolve({
                   Color: Color,
                   Rectangle: Rectangle,
+                  GameState: GameState,
                   
                   VelocitySystem: VelocitySystem,
                   WallCollisionSystem: WallCollisionSystem,
                   BlockRenderSystem: BlockRenderSystem,
                   BallRenderSystem: BallRenderSystem,
-                  PaddleControlSystem: PaddleControlSystem
+                  PaddleControlSystem: PaddleControlSystem,
+                  MessagingSystem: MessagingSystem
             });
            
 });
