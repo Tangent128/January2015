@@ -33,16 +33,20 @@ _5gon.push(function(loaded) {
                   );
             }
            
-            function xBounce(entity, xEdge) {
+            function xBounce(entity, xEdge, edgeSpeed) {
+                  edgeSpeed = edgeSpeed || 0;
                   entity.velocity.x *= -1;
+                  entity.velocity.x += edgeSpeed;
                   if(entity.velocity.x < 0) {
                         entity.bounds.x = xEdge - entity.bounds.w;
                   } else if(entity.velocity.x > 0) {
                         entity.bounds.x = xEdge;
                   }
             }
-            function yBounce(entity, yEdge) {
+            function yBounce(entity, yEdge, edgeSpeed) {
+                  edgeSpeed = edgeSpeed || 0;
                   entity.velocity.y *= -1;
+                  entity.velocity.y += edgeSpeed;
                   if(entity.velocity.y < 0) {
                         entity.bounds.y = yEdge - entity.bounds.h;
                   } else if(entity.velocity.y > 0) {
@@ -107,10 +111,12 @@ _5gon.push(function(loaded) {
                               
                               if(tx < ty) {
                                     // collision on vertical edge, so bounce horizontally
-                                    xBounce(ball, xEdge);
+                                    xBounce(ball, xEdge, blockVel.x);
+                                    bav.y += blockVel.y;
                               } else {
                                     // collision on horizontal edge, so bounce verticaly
-                                    yBounce(ball, yEdge);
+                                    yBounce(ball, yEdge, blockVel.y);
+                                    bav.x += blockVel.x;
                               }
                              
                         });
