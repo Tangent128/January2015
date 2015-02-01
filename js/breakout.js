@@ -27,30 +27,31 @@ _5gon.push(function(loaded) {
            
            function rectIntersect(r1, r2) {
                   return !(
-                        (r1.x + r1.w < r2.x) || (r2.x + r2.w < r1.x)
+                        (r1.x + r1.w <= r2.x) || (r2.x + r2.w <= r1.x)
                         ||
-                        (r1.y + r1.h < r2.y) || (r2.y + r2.h < r1.y)
+                        (r1.y + r1.h <= r2.y) || (r2.y + r2.h <= r1.y)
                   );
             }
            
-            function xBounce(entity, xEdge, edgeSpeed) {
+            function xBounce(entity, xWall, edgeSpeed) {
                   edgeSpeed = edgeSpeed || 0;
                   entity.velocity.x *= -1;
                   entity.velocity.x += edgeSpeed;
                   if(entity.velocity.x < 0) {
-                        entity.bounds.x = xEdge - entity.bounds.w;
+                        entity.bounds.x = xWall - entity.bounds.w;
                   } else if(entity.velocity.x > 0) {
-                        entity.bounds.x = xEdge;
+                        entity.bounds.x = xWall;
+                        //console.log("bounce", xWall, edgeSpeed, entity.bounds.x, entity.velocity.x);
                   }
             }
-            function yBounce(entity, yEdge, edgeSpeed) {
+            function yBounce(entity, yWall, edgeSpeed) {
                   edgeSpeed = edgeSpeed || 0;
                   entity.velocity.y *= -1;
                   entity.velocity.y += edgeSpeed;
                   if(entity.velocity.y < 0) {
-                        entity.bounds.y = yEdge - entity.bounds.h;
+                        entity.bounds.y = yWall - entity.bounds.h;
                   } else if(entity.velocity.y > 0) {
-                        entity.bounds.y = yEdge;
+                        entity.bounds.y = yWall;
                   }
             }
       
@@ -58,14 +59,30 @@ _5gon.push(function(loaded) {
 
            
            function VelocitySystem(set) {
-                set.each(function(entity) {
+            set.each(function(entity) {
                     // If no location or velocity, don't bother
                     if (entity.velocity && entity.bounds) {
                          entity.bounds.x += entity.velocity.x;
                          entity.bounds.y += entity.velocity.y;
                     }
-                    });
+            });
            };
+
+           function VelocityDampenSystem(set) {
+                set.each("velocityLimit", function(entity) {
+                        var limit = entity.velocityLimit;
+                        var v = entity.velocity;
+
+                        var speed = Math.sqrt((v.x*v.x) + (v.y*v.y));
+                        
+                        if(speed > limit) {
+                              console.log(speed, limit);
+                              var factor = limit / speed;
+                              v.x *= factor;
+                              v.y *= factor;
+                        }
+                });
+           }; 
 
            function BallCollisionSystem(ballSet, blockSet) {
                  ballSet.each("isBall", function(ball) {
@@ -111,11 +128,11 @@ _5gon.push(function(loaded) {
                               
                               if(tx < ty) {
                                     // collision on vertical edge, so bounce horizontally
-                                    xBounce(ball, xEdge, blockVel.x);
+                                    xBounce(ball, xWall, blockVel.x);
                                     bav.y += blockVel.y;
                               } else {
                                     // collision on horizontal edge, so bounce verticaly
-                                    yBounce(ball, yEdge, blockVel.y);
+                                    yBounce(ball, yWall, blockVel.y);
                                     bav.x += blockVel.x;
                               }
                              
@@ -234,6 +251,7 @@ _5gon.push(function(loaded) {
                   GameState: GameState,
                   
                   VelocitySystem: VelocitySystem,
+                  VelocityDampenSystem: VelocityDampenSystem,
                   WallCollisionSystem: WallCollisionSystem,
                   BallCollisionSystem: BallCollisionSystem,
                   BlockRenderSystem: BlockRenderSystem,
