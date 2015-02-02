@@ -54,13 +54,15 @@
                     applet.keys.mapKey(37, "left");
                     applet.keys.mapKey(39, "right");
                                                
-                    var testState = new Breakout.GameState();
-                                                                         
+                    var gameState = new Breakout.GameState();
+                    gameState.mode = "playing";
+
 					var tickLength = 1/60;
 					window.setInterval(function() {
 						var cx = applet.context;
 						var k = applet.keys;
 
+						// Movement
                         Breakout.PaddleControlSystem(blocks, k);
                         Breakout.VelocitySystem(blocks);
 						Breakout.VelocityDampenSystem(blocks);
@@ -72,16 +74,20 @@
 							h: applet.height
 						});
 						
+						// Logic
+                        Breakout.BreakBlockSystem(blocks, gameState);
+						
+                        // State Cleanup
+                        Breakout.ReaperSystem(blocks);
                         
-						// render
+						// Render
 						cx.fillStyle = "#eee";
 						cx.fillRect(0,0, applet.width, applet.height);
-                        testState.mode = "intro";
-                        Breakout.MessagingSystem(testState, cx);
+                        Breakout.MessagingSystem(gameState, cx);
 						Breakout.BlockRenderSystem(blocks, cx);
                         Breakout.BallRenderSystem(blocks, cx);
-                        Breakout.BreakBlockSystem(blocks);
-                        Breakout.ReaperSystem(blocks);
+						
+						// Render Cleanup
 						
 					}, tickLength*1000);
 				});

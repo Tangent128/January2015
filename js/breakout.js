@@ -144,11 +144,12 @@ _5gon.push(function(loaded) {
 			});
 		};
 
-		function BreakBlockSystem(set) {
+		function BreakBlockSystem(set, gameState) {
 			set.each("isBlock", function(block) {
 				if ("hitsRemaining" in block) {
 					if (block.hitsRemaining == 0) {
 						block.isDead = true;
+						gameState.score += 10;
 					}
 				}
 			});
@@ -209,14 +210,15 @@ _5gon.push(function(loaded) {
 				if (gameState.mode === "won") {
 					cx.font = "48px serif";
 					cx.fillText("You Won", 150, 100);
-				}
-				if (gameState.mode === "lost") {
+				} else if (gameState.mode === "lost") {
 					cx.font = "48px serif";
 					cx.fillText("You Lost", 150, 100);
-				}
-				if (gameState.mode === "intro") {
+				} else if (gameState.mode === "intro") {
 					cx.font = "48px serif";
 					cx.fillText("Press Spacebar to Start", 150, 100);
+				} else if (gameState.mode === "playing") {
+					cx.font = "48px serif";
+					cx.fillText("Score: "+gameState.score, 150, 100);
 				}
 			}
 		};
