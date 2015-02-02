@@ -78,6 +78,7 @@ _5gon.push(function(loaded) {
 		function VelocityDampenSystem(set) {
 			set.each("velocityLimit", function(entity) {
 				var limit = entity.velocityLimit;
+                var floor = entity.minimumVelocity;
 				var v = entity.velocity;
 
 				var speed = Math.sqrt((v.x*v.x) + (v.y*v.y));
@@ -87,6 +88,11 @@ _5gon.push(function(loaded) {
 					v.x *= factor;
 					v.y *= factor;
 				}
+                if (speed < floor) {
+                     var factor = floor / speed;
+                     v.x *= factor;
+                     v.y *= factor;
+                }
 			});
 		};
 
