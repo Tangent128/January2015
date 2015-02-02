@@ -29,19 +29,20 @@
 						block.bounds = new Breakout.Rectangle(x, y, w, h);
 						block.color = new Breakout.Color(r, g, b);
 						block.isBlock = true;
+						block.isBrick = true;
                         block.velocity = new Entities.Velocity(0, 0);
                         block.hitsRemaining = 3;
                         blocks.add(block);
 					};
 					
                     function addPaddle (x,y,w,h, r,g,b) {
-                            var paddle = new Entities.Entity();
-                            paddle.bounds = new Breakout.Rectangle(x, y, w, h);
-                            paddle.color = new Breakout.Color(r, g, b);
-                            paddle.isBlock = true;
-                            paddle.velocity = new Entities.Velocity(0, 0);
-                            paddle.isPlayerControlled = true;
-                            blocks.add(paddle);
+						var paddle = new Entities.Entity();
+						paddle.bounds = new Breakout.Rectangle(x, y, w, h);
+						paddle.color = new Breakout.Color(r, g, b);
+						paddle.isBlock = true;
+						paddle.velocity = new Entities.Velocity(0, 0);
+						paddle.isPlayerControlled = true;
+						blocks.add(paddle);
                     };
                                                                 
                     function addBall(x, y, radius, r, g, b) {
@@ -100,14 +101,17 @@
                         Breakout.PaddleControlSystem(blocks, k);
 
 						// Movement
-                        Breakout.VelocitySystem(blocks);
-						Breakout.VelocityDampenSystem(blocks);
-						Breakout.BallCollisionSystem(blocks, blocks);
-                        Breakout.WallCollisionSystem(blocks, bounds);
+						if(gameState.mode == "playing") {
+							Breakout.VelocitySystem(blocks);
+							Breakout.VelocityDampenSystem(blocks);
+							Breakout.BallCollisionSystem(blocks, blocks);
+							Breakout.WallCollisionSystem(blocks, bounds);
+						}
 						
 						// Logic
                         Breakout.BreakBlockSystem(blocks, gameState);
                         Breakout.LoseBallSystem(blocks);
+                        Breakout.GameJudgeSystem(blocks, blocks, gameState);
 						
                         // State Cleanup
                         Breakout.ReaperSystem(blocks);

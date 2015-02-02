@@ -190,6 +190,28 @@ _5gon.push(function(loaded) {
 			});
 		};
 
+		function GameJudgeSystem(ballSet, brickSet, gameState) {
+			if(gameState.mode != "playing") {
+				return;
+			}
+			
+			var ballsInPlay = false;
+			var bricksInPlay = false;
+			
+			ballSet.each("isBall", function(ball) {
+				ballsInPlay = true;
+			});
+			brickSet.each("isBrick", function(block) {
+				bricksInPlay = true;
+			});
+			
+			if(!bricksInPlay) {
+				gameState.mode = "won";
+			} else if(!ballsInPlay) {
+				gameState.mode = "lost";
+			}
+		};
+		
 		function ReaperSystem(set) {
 			var toRemove = [];
 
@@ -302,6 +324,7 @@ _5gon.push(function(loaded) {
 			
 			BreakBlockSystem: BreakBlockSystem,
 			LoseBallSystem: LoseBallSystem,
+			GameJudgeSystem: GameJudgeSystem,
 			
 			BlockRenderSystem: BlockRenderSystem,
 			BallRenderSystem: BallRenderSystem,
