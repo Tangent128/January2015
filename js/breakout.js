@@ -78,7 +78,6 @@ _5gon.push(function(loaded) {
                         var speed = Math.sqrt((v.x*v.x) + (v.y*v.y));
                         
                         if(speed > limit) {
-                              console.log(speed, limit);
                               var factor = limit / speed;
                               v.x *= factor;
                               v.y *= factor;
