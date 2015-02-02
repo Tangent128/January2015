@@ -78,7 +78,6 @@ _5gon.push(function(loaded) {
 		function VelocityDampenSystem(set) {
 			set.each("velocityLimit", function(entity) {
 				var limit = entity.velocityLimit;
-                var floor = entity.minimumVelocity;
 				var v = entity.velocity;
 
 				var speed = Math.sqrt((v.x*v.x) + (v.y*v.y));
@@ -88,11 +87,20 @@ _5gon.push(function(loaded) {
 					v.x *= factor;
 					v.y *= factor;
 				}
-                if (speed < floor) {
-                     var factor = floor / speed;
-                     v.x *= factor;
-                     v.y *= factor;
-                }
+			});
+		};
+		function VelocityBoostSystem(set) {
+			set.each("minimumVelocity", function(entity) {
+				var floor = entity.minimumVelocity;
+				var v = entity.velocity;
+
+				var speed = Math.sqrt((v.x*v.x) + (v.y*v.y));
+
+				if (speed < floor) {
+					var factor = floor / speed;
+					v.x *= factor;
+					v.y *= factor;
+				}
 			});
 		};
 
@@ -232,18 +240,20 @@ _5gon.push(function(loaded) {
 			});
 		};
 
-		function PaddleControlSystem(set, k) {
+		function PaddleControlSystem(set, k, tickLength) {
 			set.each("isPlayerControlled", function(block) {
 
 				var left = k.left;
 				var right = k.right;
+				
+				var v = block.velocity;
 
 				if (left) {
-					block.velocity.x = -5;
+					v.x -= 20*tickLength;
 				} else if (right) {
-					block.velocity.x = 5;
+					v.x += 20*tickLength;
 				} else {
-					block.velocity.x = 0;
+					v.x = 0;
 				}
 
 			});
@@ -324,6 +334,7 @@ _5gon.push(function(loaded) {
 
 			VelocitySystem: VelocitySystem,
 			VelocityDampenSystem: VelocityDampenSystem,
+			VelocityBoostSystem: VelocityBoostSystem,
 			
 			WallCollisionSystem: WallCollisionSystem,
 			BallCollisionSystem: BallCollisionSystem,

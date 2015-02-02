@@ -41,6 +41,7 @@
 						paddle.color = new Breakout.Color(r, g, b);
 						paddle.isBlock = true;
 						paddle.velocity = new Entities.Velocity(0, 0);
+						paddle.velocityLimit = 7;
 						paddle.isPlayerControlled = true;
 						blocks.add(paddle);
                     };
@@ -75,9 +76,8 @@
                                 counter++;
                             }
                         }
-                                                                         
                     };
-                                                                         
+
 					addPaddle(200,350,200,40, 200,0,255);
                     addBlocks(6, 3);
 
@@ -99,12 +99,13 @@
 						var k = applet.keys;
 						
 						// Control
-                        Breakout.PaddleControlSystem(blocks, k);
+                        Breakout.PaddleControlSystem(blocks, k, tickLength);
 
 						// Movement
 						if(gameState.mode == "playing") {
-							Breakout.VelocitySystem(blocks);
+							Breakout.VelocitySystem(blocks, tickLength);
 							Breakout.VelocityDampenSystem(blocks);
+							Breakout.VelocityBoostSystem(blocks);
 							Breakout.BallCollisionSystem(blocks, blocks);
 							Breakout.WallCollisionSystem(blocks, bounds);
 						}
