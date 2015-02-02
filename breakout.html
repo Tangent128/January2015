@@ -42,6 +42,7 @@
                         ball.radius = radius;
                         ball.color = new Breakout.Color(r, g, b);
                         ball.isBall = true;
+                        ball.lastWallHit = "none";
                         blocks.add(ball);
                     };
                                                                          
@@ -56,26 +57,26 @@
                                                
                     var gameState = new Breakout.GameState();
                     gameState.mode = "playing";
+                    
+                    var bounds = new Breakout.Rectangle(0, 0, applet.width, applet.height);
 
 					var tickLength = 1/60;
 					window.setInterval(function() {
 						var cx = applet.context;
 						var k = applet.keys;
+						
+						// Control
+                        Breakout.PaddleControlSystem(blocks, k);
 
 						// Movement
-                        Breakout.PaddleControlSystem(blocks, k);
                         Breakout.VelocitySystem(blocks);
 						Breakout.VelocityDampenSystem(blocks);
 						Breakout.BallCollisionSystem(blocks, blocks);
-                        Breakout.WallCollisionSystem(blocks, {
-							x: 0,
-							y: 0,
-							w: applet.width,
-							h: applet.height
-						});
+                        Breakout.WallCollisionSystem(blocks, bounds);
 						
 						// Logic
                         Breakout.BreakBlockSystem(blocks, gameState);
+                        Breakout.LoseBallSystem(blocks);
 						
                         // State Cleanup
                         Breakout.ReaperSystem(blocks);
