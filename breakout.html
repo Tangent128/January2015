@@ -48,8 +48,9 @@
                     function addBall(x, y, radius, r, g, b) {
                         var ball = new Entities.Entity();
 						ball.bounds = new Breakout.Rectangle(x, y, radius*2, radius*2);
-						ball.velocity = new Entities.Velocity(0,0);
-						ball.velocityLimit = 10;
+						ball.velocity = new Entities.Velocity(-2,-2);
+						ball.velocityLimit = 7;
+                        ball.minimumVelocity = 4;
                         ball.radius = radius;
                         ball.color = new Breakout.Color(r, g, b);
                         ball.isBall = true;
