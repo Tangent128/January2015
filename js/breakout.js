@@ -138,7 +138,7 @@ _5gon.push(function(loaded) {
                                     bav.x += blockVel.x;
                               }
                                      
-                              if ("hitsRemaining in block") {
+                              if ("hitsRemaining" in block) {
                                      block.hitsRemaining -= 1;
                               }
                              
@@ -148,7 +148,7 @@ _5gon.push(function(loaded) {
            
            function BreakBlockSystem(set) {
                 set.each("isBlock", function(block) {
-                    if ("hitsRemaining in block") {
+                    if ("hitsRemaining" in block) {
                          if (block.hitsRemaining == 0) {
                             block.isDead = true;
                          }
