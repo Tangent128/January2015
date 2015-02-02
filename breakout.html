@@ -28,12 +28,21 @@
 						block.bounds = new Breakout.Rectangle(x, y, w, h);
 						block.color = new Breakout.Color(r, g, b);
 						block.isBlock = true;
-                        block.velocity = new Entities.Velocity(5, 0);
-                        block.isPlayerControlled = true;
+                        block.velocity = new Entities.Velocity(0, 0);
                         block.hitsRemaining = 3;
                         blocks.add(block);
 					};
 					
+                    function addPaddle (x,y,w,h, r,g,b) {
+                            var paddle = new Entities.Entity();
+                            paddle.bounds = new Breakout.Rectangle(x, y, w, h);
+                            paddle.color = new Breakout.Color(r, g, b);
+                            paddle.isBlock = true;
+                            paddle.velocity = new Entities.Velocity(5, 0);
+                            paddle.isPlayerControlled = true;
+                            blocks.add(paddle);
+                    };
+                                                                
                     function addBall(x, y, radius, r, g, b) {
                         var ball = new Entities.Entity();
 						ball.bounds = new Breakout.Rectangle(x, y, radius*2, radius*2);
@@ -45,11 +54,38 @@
                         ball.lastWallHit = "none";
                         blocks.add(ball);
                     };
+                      
+                    function addBlocks (width, depth) {
+                        var counter = 0;
+                        var startX = 0;
+                        var startY = 50;
+                        for (i = 0; i < width; i++) {
+                            startX = (i * 100);
+                            for (j = 0; j < depth; j++) {
+                                startY = 50 + (j * 50);
+                                if ((counter % 2) == 0) {
+                                    addBlock(startX, startY, 100, 50, 255,255,200);
+                                } else {
+                                    addBlock(startX, startY, 100, 50, 255,200,100);
+                                }
+                                counter++;
+                            }
+                        }
                                                                          
-					addBlock(0,0,500,50, 200,0,255);
-					addBlock(0,50,50,350, 255,255,200);
-					addBlock(100,100,100,100, 255,200,100);
-					
+                    };
+                                                                         
+					addPaddle(100,350,200,40, 200,0,255);
+                                                                         
+                                                                         
+					//addBlock(0,50,100,50, 255,255,200);
+					//addBlock(100,50,100,50, 255,200,100);
+                    //addBlock(200,50,100,50, 255,255,200);
+                    //addBlock(300,50,100,50, 255,200,100);
+                    //addBlock(400,50,100,50, 255,255,200);
+                    //addBlock(500,50,100,50, 255,200,100);
+                      
+                    addBlocks(6, 3);
+                                                                         
                     addBall(200, 230, 10, 255, 0, 0);
                                                                          
                     applet.keys.mapKey(37, "left");
