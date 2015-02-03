@@ -24,7 +24,7 @@ _5gon.push(function(loaded) {
 		    entityList.splice(entityList.indexOf(entity), 1);
 		}
 	    };
-	    
+                     
 	    this.each = function(filter, callback) {
 		
 		if((typeof filter) != "string") {
@@ -42,6 +42,13 @@ _5gon.push(function(loaded) {
 	    this.get = function(index) {
 		return entityList[index];
 	    };
+                     
+        this.clear =  function () {
+                     
+            entityList = [];
+            memberSet = {};
+                     
+        };
 
 	};
     
@@ -49,6 +56,7 @@ _5gon.push(function(loaded) {
 	    this.id = idCounter++;
 	};
 
+                     
     //NOTE: in most cases, nicer to use a rectangle object
     // instead of a point object for location
     function Location(x, y) {
