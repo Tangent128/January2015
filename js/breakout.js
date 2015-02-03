@@ -395,14 +395,12 @@ _5gon.push(function(loaded) {
         var reset = k.reset;
                                  
         if (reset) {
-                                 
-            blocks = new Entities.EntitySet();
+                         
+            blocks.clear();
             gameState.score = 0;
             gameState.mode = "playing";
             initGame(blocks);
-            return blocks;
             }
-        return blocks;
                                  
         };
                                  
