@@ -23,70 +23,12 @@
 					$gameCanvas.focus();
 					
 					var blocks = new Entities.EntitySet();
-					
-					function addBlock(x,y,w,h, r,g,b) {
-						var block = new Entities.Entity();
-						block.bounds = new Breakout.Rectangle(x, y, w, h);
-						block.color = new Breakout.Color(r, g, b);
-						block.isBlock = true;
-						block.isBrick = true;
-                        block.velocity = new Entities.Velocity(0, 0);
-                        block.hitsRemaining = 3;
-                        blocks.add(block);
-					};
-					
-                    function addPaddle (x,y,w,h, r,g,b) {
-						var paddle = new Entities.Entity();
-						paddle.bounds = new Breakout.Rectangle(x, y, w, h);
-						paddle.color = new Breakout.Color(r, g, b);
-						paddle.isBlock = true;
-						paddle.velocity = new Entities.Velocity(0, 0);
-						paddle.velocityLimit = 7;
-						paddle.isPlayerControlled = true;
-						blocks.add(paddle);
-                    };
-                                                                
-                    function addBall(x, y, radius, r, g, b) {
-                        var ball = new Entities.Entity();
-						ball.bounds = new Breakout.Rectangle(x, y, radius*2, radius*2);
-						ball.velocity = new Entities.Velocity(-2,-2);
-						ball.velocityLimit = 7;
-                        ball.minimumVelocity = 4;
-                        ball.radius = radius;
-                        ball.color = new Breakout.Color(r, g, b);
-                        ball.isBall = true;
-                        ball.lastWallHit = "none";
-                        blocks.add(ball);
-                        return ball;
-                    };
-                      
-                    function addBlocks (width, depth) {
-                        var counter = 0;
-                        var startX = 0;
-                        var startY = 50;
-                        for (i = 0; i < width; i++) {
-                            startX = (i * 100);
-                            for (j = 0; j < depth; j++) {
-                                startY = 50 + (j * 50);
-                                if ((counter % 2) == 0) {
-                                    addBlock(startX, startY, 100, 50, 255,255,200);
-                                } else {
-                                    addBlock(startX, startY, 100, 50, 255,200,100);
-                                }
-                                counter++;
-                            }
-                        }
-                    };
-
-					addPaddle(200,350,200,40, 200,0,255);
-                    addBlocks(6, 3);
-
-                    var ball = addBall(300, 230, 10, 255, 0, 0);
-                    ball.velocity.y = -3;
-                    ball.velocity.x = -1;
+                                                                         
+                    Breakout.initGame(blocks);
                     
                     applet.keys.mapKey(37, "left");
                     applet.keys.mapKey(39, "right");
+                    applet.keys.mapKey(32, "reset");
                                                
                     var gameState = new Breakout.GameState();
                     gameState.mode = "playing";
@@ -117,13 +59,14 @@
 						
                         // State Cleanup
                         Breakout.ReaperSystem(blocks);
-                        
+                                       
 						// Render
 						cx.fillStyle = "#eee";
 						cx.fillRect(0,0, applet.width, applet.height);
 						Breakout.BlockRenderSystem(blocks, cx);
                         Breakout.BallRenderSystem(blocks, cx);
                         Breakout.MessagingSystem(gameState, cx);
+                        blocks = Breakout.GameResetSystem(blocks, gameState, k);
 						
 						// Render Cleanup
 						
