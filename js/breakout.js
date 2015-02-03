@@ -261,20 +261,38 @@ _5gon.push(function(loaded) {
 
 		function MessagingSystem(gameState, cx) {
 			if (gameState.mode) {
-				cx.fillStyle = "#ffffff";
-				//cx.fillRect(500,500,100,100);
-				if (gameState.mode === "won") {
-					cx.font = "48px serif";
-					cx.fillText("You Won", 150, 100);
-				} else if (gameState.mode === "lost") {
-					cx.font = "48px serif";
-					cx.fillText("You Lost", 150, 100);
-				} else if (gameState.mode === "intro") {
-					cx.font = "48px serif";
-					cx.fillText("Press Spacebar to Start", 150, 100);
-				} else if (gameState.mode === "playing") {
-					cx.font = "48px serif";
-					cx.fillText("Score: "+gameState.score, 150, 100);
+				
+				// background
+				cx.globalAlpha = 0.75;
+				cx.fillStyle = "#004";
+				if(gameState.mode != "playing") {
+					cx.fillRect(0,120,600,100);
+				}
+				cx.fillRect(0,375,600,25);
+				cx.globalAlpha = 1;
+				
+				// text
+				cx.fillStyle = "#fff";
+				
+				cx.font = "bold 24px sans-serif";
+				cx.textAlign = "left";
+				cx.fillText("Score: "+gameState.score, 4, 396);
+				
+				cx.font = "bold 48px sans-serif";
+				cx.textAlign = "center";
+				
+				switch(gameState.mode) {
+					case "intro":
+						cx.fillText("Press Spacebar to Start", 300, 190);
+						break;
+					case "lost":
+						cx.fillStyle = "#c00";
+						cx.fillText("You Lost", 300, 190);
+						break;
+					case "won":
+						cx.fillStyle = "#0a0";
+						cx.fillText("You Won", 300, 190);
+						break;
 				}
 			}
 		};
@@ -382,7 +400,7 @@ _5gon.push(function(loaded) {
                      }
                 };
                      
-                addPaddle(200,350,200,40, 200,0,255);
+                addPaddle(200,350,200,20, 200,0,255);
                 addBlocks(6, 3);
                      
                 var ball = addBall(300, 230, 10, 255, 0, 0);
