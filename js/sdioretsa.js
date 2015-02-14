@@ -9,16 +9,16 @@ _5gon.push(function(loaded) {
         this.angle = 0;
     }
            
+	/* Helper Functions */
+
     function PhysicsObject(sprite) {
         this.position = new Entities.Position(0,0);
         this.velocity = new Entities.Velocity(0,0);
-        this.thrust = 0;
+        this.size = 50;
         this.sprite = sprite;
     	this.gScale = 1;
     };
-	
-	/* Helper Functions */
-
+    
     function Asteroid(objects, position) {
         var asteroid = new PhysicsObject(resource.asteroid, 50);
            
@@ -42,6 +42,9 @@ _5gon.push(function(loaded) {
         ship.think = ai;
         ship.gScale = 0;
            
+        ship.angle = 0;
+        ship.thrust = 0;
+        
         ship.cooldown = 0;
            
         ship.isShip = true;
@@ -93,15 +96,55 @@ _5gon.push(function(loaded) {
 	};
 	
 	function ThrustSystem(set) {
+		set.each("thrust", function(entity) {
+			var v = entity.velocity;
+			var t = entity.thrust;
+			var a = entity.angle;
+			this.vx += t * Math.sin(a) * timeScale;
+			this.vy += t * Math.cos(a) * timeScale;
+		});
 	};
 	
 	function GravitySystem(targetSet, sourceSet, G) {
+		sourceSet.each(function(source) {
+			var sourceX = source.location.x;
+			var sourceY = source.location.y;
+			targetSet.each(function(target) {
+				// calc. normalized gravity direction
+				var dx = sourceX - target.location.x;
+				var dy = sourceY - target.location.y;
+				var dist = Math.sqrt(dx*dx + dy*dy);
+				dx /= dist;
+				dy /= dist;
+				
+				// apply
+				var force = target.gScale * G / dist;
+				
+				target.velocity.x += dx * force;
+				target.velocity.y += dy * force;
+			});
+		});
 	};
 	
-	function WrapSystem(set) {
+	function WrapSystem(set, bounds) {
+		set.each("location", function(entity) {
+			var loc = entity.location;
+			if(loc.x > bounds.x + bounds.w) loc.x += bounds.w;
+			if(loc.y > bounds.y + bounds.h) loc.y += bounds.h;
+			if(loc.x < bounds.x) loc.x -= bounds.w;
+			if(loc.y < bounds.y) loc.y -= bounds.h;
+		});
 	};
 	
-	function GravityWellControlSystem(set, mouse) {
+	var TAU = Math.PI * 2;
+	function AngleNormalizeSystem(set) {
+		set.each("angle", function(entity) {
+			if(this.entity < 0) entity.angle = (entity.angle % TAU) + TAU;
+			if(this.entity > TAU) entity.angle = entity.angle % TAU;
+		});
+	};
+	
+	function GravityWellControlSystem(well, set, mouse) {
 	};
 	
 	function EnemyAiSystem(shipSet, asteroidSet) {
@@ -111,9 +154,39 @@ _5gon.push(function(loaded) {
 	};
 
 	function UpdateSpriteFromPhysicsSystem(set) {
+		set.each("sprite", function(entity) {
+			var sprite = entty.sprite;
+			
+			if("angle" in entity) {
+				sprite.angle = entity.angle;
+			}
+			if("size" in entity) {
+				sprite.size = entity.size;
+			}
+		});
 	};
 	
-	function RenderSystem(set) {
+	function RenderSystem(set, bounds) {
+		function drawAt(sprite, x, y) {
+			cx.save();
+				cx.translate(x, y);
+				cx.rotate(sprite.angle);
+				cx.drawImage(sprite.img, -sprite.size/2, -sprite.size/2, sprite.size, sprite.size);
+			cx.restore();
+		};
+		
+		set.each("sprite", function(entity) {
+			var loc = entity.location;
+			
+			// draw copies to make wrapping look nice
+			var xSign = (loc.x > bounds.x + bounds.w / 2) ? -1 : 1;
+			var ySign = (loc.y > bounds.y + bounds.h / 2) ? -1 : 1;
+			
+			drawAt(this.x, this.y);
+			drawAt(this.x + W * xSign, this.y);
+			drawAt(this.x, this.y + H * ySign);
+			drawAt(this.x + W * xSign, this.y + H * ySign);
+		});
 	};
            
 	/* Exports */
