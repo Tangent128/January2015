@@ -11,6 +11,12 @@ _5gon.push(function(loaded) {
 		this.state = "start"; // start, playing, won, lost
 	};
 	
+	function MouseState() {
+		this.pressed = false;
+		this.x = 0;
+		this.y = 0;
+	};
+	
 	function MessageHolder($wrapper, $text) {
 		this.$wrapper = $wrapper; // DOM element representing entire textbox
 		this.$text = $text; // DOM element whose contents are the displayed text
@@ -31,7 +37,7 @@ _5gon.push(function(loaded) {
 	function WrapSystem(set) {
 	};
 	
-	function GravityWellControlSystem(set) {
+	function GravityWellControlSystem(set, mouse) {
 	};
 	
 	function EnemyAiSystem(shipSet, asteroidSet) {
