@@ -2,56 +2,7 @@ var _5gon = _5gon || [];
 _5gon.push(function(loaded) {
 
 	/* Components */
-	
-	/* Helper Functions */
-
-	/* State Objects */
-	
-	function GameState() {
-		this.state = "start"; // start, playing, won, lost
-	};
-	
-	function MouseState() {
-		this.pressed = false;
-		this.x = 0;
-		this.y = 0;
-	};
-	
-	function MessageHolder($wrapper, $text) {
-		this.$wrapper = $wrapper; // DOM element representing entire textbox
-		this.$text = $text; // DOM element whose contents are the displayed text
-		this.displaying = false;
-	};
-	
-	/* Systems */
-	
-	function GameResetSystem(set) {
-	};
-	
-	function ThrustSystem(set) {
-	};
-	
-	function GravitySystem(targetSet, sourceSet, G) {
-	};
-	
-	function WrapSystem(set) {
-	};
-	
-	function GravityWellControlSystem(set, mouse) {
-	};
-	
-	function EnemyAiSystem(shipSet, asteroidSet) {
-	};
-
-	function GameWinLossSystem(set, messageBox, winMessage, loseMessage) {
-	};
-
-	function UpdateSpriteFromPhysicsSystem(set) {
-	};
-	
-	function RenderSystem(set) {
-	};
-	
+           
     function Sprite(img, size, angle) {
         this.img = img;
         this.size = size;
@@ -63,9 +14,11 @@ _5gon.push(function(loaded) {
         this.velocity = new Entities.Velocity(0,0);
         this.thrust = 0;
         this.sprite = sprite;
-        this.gScale = 1;
+    	this.gScale = 1;
     };
-           
+	
+	/* Helper Functions */
+
     function Asteroid(objects, position) {
         var asteroid = new PhysicsObject(resource.asteroid, 50);
            
@@ -113,8 +66,55 @@ _5gon.push(function(loaded) {
            
         bullet.lifespan = 3.5;
            
-    	objects.push(bullet);
+        objects.push(bullet);
     }
+           
+	/* State Objects */
+	
+	function GameState() {
+		this.state = "start"; // start, playing, won, lost
+	};
+	
+	function MouseState() {
+		this.pressed = false;
+		this.x = 0;
+		this.y = 0;
+	};
+	
+	function MessageHolder($wrapper, $text) {
+		this.$wrapper = $wrapper; // DOM element representing entire textbox
+		this.$text = $text; // DOM element whose contents are the displayed text
+		this.displaying = false;
+	};
+	
+	/* Systems */
+	
+	function GameResetSystem(set) {
+	};
+	
+	function ThrustSystem(set) {
+	};
+	
+	function GravitySystem(targetSet, sourceSet, G) {
+	};
+	
+	function WrapSystem(set) {
+	};
+	
+	function GravityWellControlSystem(set, mouse) {
+	};
+	
+	function EnemyAiSystem(shipSet, asteroidSet) {
+	};
+
+	function GameWinLossSystem(set, messageBox, winMessage, loseMessage) {
+	};
+
+	function UpdateSpriteFromPhysicsSystem(set) {
+	};
+	
+	function RenderSystem(set) {
+	};
            
 	/* Exports */
 
