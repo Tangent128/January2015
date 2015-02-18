@@ -70,9 +70,9 @@ _5gon.push(function(loaded) {
     };
                      
 	function Timer(interval, randomAdd) {
-	    this.countdown = interval || 0;
 	    this.resetTo = interval || 0;
 	    this.resetRandom = randomAdd || 0;
+	    this.countdown = this.resetTo + this.resetRandom * Math.random();
 	};
 
 

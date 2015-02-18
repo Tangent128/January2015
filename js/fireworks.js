@@ -29,16 +29,25 @@ _5gon.push(function(loaded) {
 			});
 		};
 		
+		function spark(set, x, y, vx, vy, time, timeRandom) {
+			var spark = new Entities.Entity();
+			spark.location = new Entities.Location(x, y);
+			spark.velocity = new Entities.Velocity(vx, vy);
+			spark.timer = new Entities.Timer(time || 1, timeRandom || 0);
+			spark.dieOnTimeout = true;
+			spark.isSpark = true;
+			set.add(spark);
+		};
+		
 		function RocketTrailSystem(set) {
 			set.each("isRocket", function(rocket) {
 				if(Math.random() < 0.5) {
-					var spark = new Entities.Entity();
-					spark.location = new Entities.Location(rocket.location.x, rocket.location.y);
 					// Sparks are made to radiate out
-					spark.velocity = new Entities.Velocity(rocket.velocity.x + (Math.random()*2 - 1), rocket.velocity.y * 0.5);
-					spark.timer = new Entities.Timer(1);
-					spark.isSpark = true;
-					set.add(spark);
+					spark(set,
+						rocket.location.x, rocket.location.y,
+						rocket.velocity.x + (Math.random()*2 - 1), rocket.velocity.y * 0.5,
+						1, 1
+					);
 				}
 			});
 		};
@@ -52,28 +61,25 @@ _5gon.push(function(loaded) {
 			for(var i = 0; i < (particleCount); i++) {
 				//scalingFactor = Math.sqrt(Math.random());
 				scalingFactor = (1 - Math.pow(Math.random(), 4));
-				var spark = new Entities.Entity();
-				spark.location = new Entities.Location(x, y);
+
 				// Sparks are made to radiate out
-				spark.velocity = new Entities.Velocity(
+				spark(set, x, y,
 					vx + (scalingFactor * (2 * Math.cos(radianIncrement * i))),
-					vy + (scalingFactor * (2 * Math.sin(radianIncrement * i))));
-				// Die in 3 seconds
-				spark.timer = new Entities.Timer(3);
-				spark.dieOnTimeout = true;
-				spark.isSpark = true;
-				set.add(spark);
+					vy + (scalingFactor * (2 * Math.sin(radianIncrement * i))),
+					0.5, 1
+				);
 			}
 		};
 		
 		function RocketDetonationSystem(set) {
-			   set.each(function(entity) {
-					if (entity.isRocket && entity.timer.countdown == 0) {
-						detonate(set,
-							entity.location.x, entity.location.y,
-							entity.velocity.x, entity.velocity.y);
-					}
-				});
+			set.each(function(entity) {
+				if (entity.isRocket && entity.timer.countdown == 0) {
+					detonate(set,
+						entity.location.x, entity.location.y,
+						entity.velocity.x, entity.velocity.y
+					);
+				}
+			});
 		};
 		
 		function ClickBoomSystem(set, mouse) {
