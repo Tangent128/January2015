@@ -70,7 +70,7 @@ _5gon.push(function(loaded) {
     };
                      
 	function Timer(interval, randomAdd) {
-	    this.countdown = 0;
+	    this.countdown = interval || 0;
 	    this.resetTo = interval || 0;
 	    this.resetRandom = randomAdd || 0;
 	};
@@ -120,18 +120,14 @@ _5gon.push(function(loaded) {
 	    Entity: Entity,
 	    EntitySet: EntitySet,
 
-        Location: Location,
-        Velocity: Velocity,
+	    Location: Location,
+	    Velocity: Velocity,
                                
 	    Timer: Timer,
 	    TimerTickSystem: TimerTickSystem,
 	    TimerExpireSystem: TimerExpireSystem
 	});
 	
-	// deprecated, use above exported object instead
-	loaded("EntitySet").resolve(EntitySet);
-	loaded("Entity").resolve(Entity);
-
     });
     
 });

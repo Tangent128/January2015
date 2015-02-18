@@ -60,6 +60,7 @@ _5gon.push(function(loaded) {
 					vy + (scalingFactor * (2 * Math.sin(radianIncrement * i))));
 				// Die in 3 seconds
 				spark.timer = new Entities.Timer(3);
+				spark.dieOnTimeout = true;
 				spark.isSpark = true;
 				set.add(spark);
 			}
