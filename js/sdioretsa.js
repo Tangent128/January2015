@@ -21,8 +21,8 @@ _5gon.push(function(loaded) {
 		this.gScale = 1;
     };
     
-    function spawnAsteroid(objects, location, sprite) {
-		var asteroid = new PhysicsObject(sprite, 50);
+    function spawnAsteroid(objects, location, image, size) {
+		var asteroid = new PhysicsObject(new Sprite(image, size || 50, 0));
 		   
 		asteroid.location = location;
 		//asteroid.angle = rand(Math.PI * 2);
@@ -162,7 +162,7 @@ _5gon.push(function(loaded) {
 		});
 	};
 	
-	function RenderSystem(set, bounds) {
+	function RenderSystem(set, bounds, cx) {
 		function drawAt(sprite, x, y) {
 			cx.save();
 				cx.translate(x, y);
@@ -178,10 +178,10 @@ _5gon.push(function(loaded) {
 			var xSign = (loc.x > bounds.x + bounds.w / 2) ? -1 : 1;
 			var ySign = (loc.y > bounds.y + bounds.h / 2) ? -1 : 1;
 			
-			drawAt(this.x, this.y);
-			drawAt(this.x + W * xSign, this.y);
-			drawAt(this.x, this.y + H * ySign);
-			drawAt(this.x + W * xSign, this.y + H * ySign);
+			drawAt(entity.sprite, loc.x, loc.y);
+			drawAt(entity.sprite, loc.x + bounds.w * xSign, loc.y);
+			drawAt(entity.sprite, loc.x, loc.y + bounds.h * ySign);
+			drawAt(entity.sprite, loc.x + bounds.w * xSign, loc.y + bounds.h * ySign);
 		});
 	};
 	   
