@@ -1,0 +1,57 @@
+<html>
+	<head>
+		<script src="js/loader.js" type="application/javascript" async="async"></script>
+		<script src="js/applet.js" type="application/javascript" async="async"></script>
+		<script src="js/entity.js" type="application/javascript" async="async"></script>
+		<!--<script src="js/sdioretsa.js" type="application/javascript" async="async"></script>-->
+		<script>
+			var _5gon = _5gon || [];
+			_5gon.push(function(loaded) {
+				var debug = function(txt, set) {
+					if(console && console.log) {
+						console.log(txt)
+						set.each(function(entity) {
+							console.log(entity.label);
+						});
+					}
+				}
+				
+				loaded("$.ready", "Applet", /*"Sdioretsa",*/ "Entities").then(
+				function($, Applet, /*Sdioretsa,*/ Entities) {
+					var $gameCanvas = $("#gameCanvas");
+					var applet = new Applet($gameCanvas);
+					$gameCanvas.focus();
+
+                    
+                    applet.keys.mapKey(37, "left");
+                    applet.keys.mapKey(39, "right");
+                    applet.keys.mapKey(32, "reset");
+  
+					var tickLength = 1/60;
+					window.setInterval(function() {
+						var cx = applet.context;
+						var k = applet.keys;
+						
+						// Control
+ 
+						// Movement
+						
+						// Logic
+
+                        // State Cleanup
+
+						// Render
+						cx.fillStyle = "#eee";
+						cx.fillRect(0,0, applet.width, applet.height);
+	
+						// Render Cleanup
+						
+					}, tickLength*1000);
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<canvas id="gameCanvas" width="640" height="360"></canvas>
+	</body>
+</html>
