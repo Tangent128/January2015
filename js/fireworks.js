@@ -43,30 +43,48 @@ _5gon.push(function(loaded) {
 			});
 		};
 		
+		function detonate(set, x, y, vx, vy) {
+			// Randomly make n^2 sparks where 4 <= n <= 8
+			var baseNumber = Math.floor((Math.random() * (18 - 12 + 1)) + 12);
+			var particleCount = baseNumber * baseNumber;
+			var radianIncrement = 2 * Math.PI / (particleCount);
+			var scalingFactor = 0;
+			for(var i = 0; i < (particleCount); i++) {
+				//scalingFactor = Math.sqrt(Math.random());
+				scalingFactor = (1 - Math.pow(Math.random(), 4));
+				var spark = new Entities.Entity();
+				spark.location = new Entities.Location(x, y);
+				// Sparks are made to radiate out
+				spark.velocity = new Entities.Velocity(
+					vx + (scalingFactor * (2 * Math.cos(radianIncrement * i))),
+					vy + (scalingFactor * (2 * Math.sin(radianIncrement * i))));
+				// Die in 3 seconds
+				spark.timer = new Entities.Timer(3);
+				spark.isSpark = true;
+				set.add(spark);
+			}
+		};
+		
 		function RocketDetonationSystem(set) {
 			   set.each(function(entity) {
 					if (entity.isRocket && entity.timer.countdown == 0) {
-						// Randomly make n^2 sparks where 4 <= n <= 8
-						var baseNumber = Math.floor((Math.random() * (18 - 12 + 1)) + 12);
-						var particleCount = baseNumber * baseNumber;
-						var radianIncrement = 2 * Math.PI / (particleCount);
-                        var scalingFactor = 0;
-						for(var i = 0; i < (particleCount); i++) {
-                            //scalingFactor = Math.sqrt(Math.random());
-                            scalingFactor = (1 - Math.pow(Math.random(), 4));
-                            var spark = new Entities.Entity();
-                            spark.location = new Entities.Location(entity.location.x, entity.location.y);
-							// Sparks are made to radiate out
-                            spark.velocity = new Entities.Velocity(entity.velocity.x + (scalingFactor * (2 * Math.cos(radianIncrement * i))), entity.velocity.y + (scalingFactor * (2 * Math.sin(radianIncrement * i))));
-							// Die in 3 seconds
-							spark.timer = new Entities.Timer(3);
-							spark.isSpark = true;
-							set.add(spark);
-						}
+						detonate(set,
+							entity.location.x, entity.location.y,
+							entity.velocity.x, entity.velocity.y);
 					}
 				});
 		};
-			   
+		
+		function ClickBoomSystem(set, mouse) {
+			var rocketExists = false;
+			set.each("isRocket", function(rocket) {
+				rocketExists = true;
+			});
+			
+			if(!rocketExists && mouse.pressed) {
+				detonate(set, mouse.x, mouse.y, 0, 0);
+			}
+		};
 		
 		/* Exports */
 		loaded("Fireworks").resolve({
@@ -75,7 +93,8 @@ _5gon.push(function(loaded) {
 			PhysicsSystem: PhysicsSystem,
 			GravitySystem: GravitySystem,
 			RocketTrailSystem: RocketTrailSystem,
-			RocketDetonationSystem: RocketDetonationSystem
+			RocketDetonationSystem: RocketDetonationSystem,
+			ClickBoomSystem: ClickBoomSystem
 		});
 	});
 	

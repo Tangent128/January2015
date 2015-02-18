@@ -71,6 +71,9 @@
 						var green = k.up ? 255 : 0;
 						var blue = k.right ? 255 : 0;
 						
+						// spawn
+						Fireworks.ClickBoomSystem(sparks, applet.mouse);
+						
 						// physics
 						Entities.TimerTickSystem(sparks, tickLength);
 						

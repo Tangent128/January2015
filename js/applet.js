@@ -1,6 +1,8 @@
 var _5gon = _5gon || [];
 _5gon.push(function(loaded) {
 	
+	loaded("$").then(function($) {
+	
 	function KeyControl() {
 		
 		var self = this;
@@ -17,7 +19,7 @@ _5gon.push(function(loaded) {
 				var name = keyNames[evt.which];
 				if(name != null) {
 					self[name] = state;
-				}				
+				}
 			};
 			$target.on("keydown", function(evt) {
 				setKey(evt, true);
@@ -28,12 +30,43 @@ _5gon.push(function(loaded) {
 		};
 		
 	}
+
+	function MouseControl() {
+		this.pressed = false;
+		this.x = 0;
+		this.y = 0;
+		
+		// attach event listeners to a DOM element
+		this.listenTo = function($target) {
+			var $doc = $(document);
+			var self = this;
+			var offset = $target.offset();
+			
+			function xyUpdate(evt) {
+				self.x = evt.pageX - offset.left;
+				self.y = evt.pageY - offset.top;
+			};
+			
+			$target.on("mousedown", function(evt) {
+				self.pressed = true;
+				offset = $target.offset();
+				$doc.on("mousemove", xyUpdate);
+				evt.preventDefault();
+			});
+			$doc.on("mouseup", function(evt) {
+				self.pressed = false;
+				$doc.off("mousemove", xyUpdate);
+				evt.preventDefault();
+			});
+			$target.on("mousemove", xyUpdate);
+		};
+	}
 	
 	/* Constructor takes a jQuery-wrapped <canvas> tag,
 	 * preps it for keyboard events.
 	 * Can pass in an existing KeyControl if multiple applets
 	 * need to share it, else it will create a new one. */
-	function Applet($canvas, keys) {
+	function Applet($canvas, keys, mouse) {
 		var canvasTag = $canvas[0];
 		this.context = canvasTag.getContext("2d");
 		this.width = canvasTag.width;
@@ -53,11 +86,17 @@ _5gon.push(function(loaded) {
 		keys.listenTo($canvas);
 		
 		this.keys = keys;
+		
+		// make new mouse control
+		this.mouse = new MouseControl();
+		this.mouse.listenTo($canvas);
 	};
 
 	/* Exports */
 	
 	loaded("KeyControl").resolve(KeyControl);
 	loaded("Applet").resolve(Applet);
+	
+	});
 
 });
