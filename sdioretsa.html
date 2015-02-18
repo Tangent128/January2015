@@ -3,7 +3,8 @@
 		<script src="js/loader.js" type="application/javascript" async="async"></script>
 		<script src="js/applet.js" type="application/javascript" async="async"></script>
 		<script src="js/entity.js" type="application/javascript" async="async"></script>
-		<!--<script src="js/sdioretsa.js" type="application/javascript" async="async"></script>-->
+        <script src="js/breakout.js" type="application/javascript" async="async"></script>
+		<script src="js/sdioretsa.js" type="application/javascript" async="async"></script>
 		<script>
 			var _5gon = _5gon || [];
 			_5gon.push(function(loaded) {
@@ -16,8 +17,8 @@
 					}
 				}
 				
-				loaded("$.ready", "Applet", /*"Sdioretsa",*/ "Entities").then(
-				function($, Applet, /*Sdioretsa,*/ Entities) {
+				loaded("$.ready", "Applet", "sdioretsa", "Breakout", "Entities").then(
+				function($, Applet, sdioretsa, Breakout, Entities) {
 					var $gameCanvas = $("#gameCanvas");
 					var applet = new Applet($gameCanvas);
 					$gameCanvas.focus();
@@ -28,10 +29,17 @@
                     applet.keys.mapKey(32, "reset");
   
 					var tickLength = 1/60;
+                    
+                    var gameState = new sdioretsa.GameState();
+                    var gameEntities = new Entities.EntitySet();
+                                                                          
+                    var testPosition = new Entities.Location(200,200);
+                    var bounds = new Breakout.Rectangle(0, 0, applet.width, applet.height);
+                                                                          
 					window.setInterval(function() {
 						var cx = applet.context;
 						var k = applet.keys;
-						
+                            
 						// Control
  
 						// Movement
@@ -43,7 +51,11 @@
 						// Render
 						cx.fillStyle = "#eee";
 						cx.fillRect(0,0, applet.width, applet.height);
+                                       
+                        sdioretsa.spawnAsteroid(gameEntities, testPosition, document.getElementById("asteroid"));
 	
+                        sdioretsa.RenderSystem(gameEntities, bounds);
+                                       
 						// Render Cleanup
 						
 					}, tickLength*1000);
@@ -53,5 +65,11 @@
 	</head>
 	<body>
 		<canvas id="gameCanvas" width="640" height="360"></canvas>
+        <img id="asteroid" src="img/asteroid.png" />
+        <img id="spiral" src="img/spiral.png" />
+        <img id="bullet" src="img/bullet.png" />
+        <img id="ship" src="img/ship.png" />
+        <img id="ship2" src="img/ship2.png" />
+        <img id="ship3" src="img/ship3.png" />
 	</body>
 </html>

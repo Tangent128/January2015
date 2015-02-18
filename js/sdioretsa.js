@@ -1,6 +1,8 @@
 var _5gon = _5gon || [];
 _5gon.push(function(loaded) {
 
+           
+    loaded("$", "Entities").then(function($, Entities) {
 	/* Components */
 	   
     function Sprite(img, size, angle) {
@@ -12,30 +14,30 @@ _5gon.push(function(loaded) {
 	/* Helper Functions */
 
     function PhysicsObject(sprite) {
-		this.position = new Entities.Position(0,0);
+		this.location = new Entities.Location(0,0);
 		this.velocity = new Entities.Velocity(0,0);
 		this.size = 50;
 		this.sprite = sprite;
 		this.gScale = 1;
     };
     
-    function spawnAsteroid(objects, position) {
-		var asteroid = new PhysicsObject(resource.asteroid, 50);
+    function spawnAsteroid(objects, location, sprite) {
+		var asteroid = new PhysicsObject(sprite, 50);
 		   
-		asteroid.position = position;
+		asteroid.location = location;
 		//asteroid.angle = rand(Math.PI * 2);
 		asteroid.velocity.x = Math.cos(asteroid.angle) * 100;
 		asteroid.velocity.y = Math.sin(asteroid.angle) * 100;
 		   
 		asteroid.isAsteroid = true;
 		   
-		objects.push(asteroid);
+		objects.add(asteroid);
     };
 	   
-    function spawnShip(objects, position, sprite, ai) {
+    function spawnShip(objects, location, sprite, ai) {
 		var ship = new PhysicsObject(sprite);
 		   
-		ship.position = position;
+		ship.location = location;
 		//ship.sprite.angle = rand(Math.PI * 2);
 		ship.velocity.x = 0;
 		ship.velocity.y = 0;
@@ -49,15 +51,15 @@ _5gon.push(function(loaded) {
 		   
 		ship.isShip = true;
 		   
-		objects.push(ship);
+		objects.add(ship);
 
 		return ship;
     }
 	   
 	   
-    function spawnBullet(objects, position, sprite, angle) {
+    function spawnBullet(objects, location, sprite, angle) {
 		var bullet = new PhysicsObject(sprite);
-		bullet.position = position;
+		bullet.location = location;
 		// This will now be retrieved from the sprite
 		//bullet.angle = angle;
 		bullet.velocity.x = 75 * Math.sin(angle);
@@ -69,7 +71,7 @@ _5gon.push(function(loaded) {
 		   
 		bullet.lifespan = 3.5;
 		   
-		objects.push(bullet);
+		objects.add(bullet);
     }
 	   
 	/* State Objects */
@@ -200,4 +202,5 @@ _5gon.push(function(loaded) {
 		UpdateSpriteFromPhysicsSystem: UpdateSpriteFromPhysicsSystem,
 		RenderSystem: RenderSystem
 	});
+    });
 });
