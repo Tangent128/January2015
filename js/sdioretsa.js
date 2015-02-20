@@ -22,12 +22,13 @@ _5gon.push(function(loaded) {
     };
     
     function spawnAsteroid(objects, location, image, size) {
-		var asteroid = new PhysicsObject(new Sprite(image, size || 50, 0));
+        var spawnAngle = (Math.random()) * (Math.PI * 2);
+		var asteroid = new PhysicsObject(new Sprite(image, size || 50, spawnAngle));
 		   
 		asteroid.location = location;
-		//asteroid.angle = rand(Math.PI * 2);
-		asteroid.velocity.x = Math.cos(asteroid.angle) * 100;
-		asteroid.velocity.y = Math.sin(asteroid.angle) * 100;
+        asteroid.angle = spawnAngle;
+		asteroid.velocity.x = Math.cos(asteroid.angle) * 1;
+		asteroid.velocity.y = Math.sin(asteroid.angle) * 1;
 		   
 		asteroid.isAsteroid = true;
 		   

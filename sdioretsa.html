@@ -3,6 +3,7 @@
 		<script src="js/loader.js" type="application/javascript" async="async"></script>
 		<script src="js/applet.js" type="application/javascript" async="async"></script>
 		<script src="js/entity.js" type="application/javascript" async="async"></script>
+        <script src="js/fireworks.js" type="application/javascript" async="async"></script>
         <script src="js/breakout.js" type="application/javascript" async="async"></script>
 		<script src="js/sdioretsa.js" type="application/javascript" async="async"></script>
 		<script>
@@ -17,8 +18,8 @@
 					}
 				}
 				
-				loaded("$.ready", "Applet", "sdioretsa", "Breakout", "Entities").then(
-				function($, Applet, sdioretsa, Breakout, Entities) {
+				loaded("$.ready", "Applet", "Fireworks", "sdioretsa", "Breakout", "Entities").then(
+				function($, Applet, Fireworks, sdioretsa, Breakout, Entities) {
 					var $gameCanvas = $("#gameCanvas");
 					var applet = new Applet($gameCanvas);
 					$gameCanvas.focus();
@@ -35,6 +36,8 @@
                                                                           
                     var testPosition = new Entities.Location(200,200);
                     var bounds = new Breakout.Rectangle(0, 0, applet.width, applet.height);
+                                                                                      
+                    sdioretsa.spawnAsteroid(gameEntities, testPosition, document.getElementById("asteroid"));
                                                                           
 					window.setInterval(function() {
 						var cx = applet.context;
@@ -51,9 +54,8 @@
 						// Render
 						cx.fillStyle = "#eee";
 						cx.fillRect(0,0, applet.width, applet.height);
-                                       
-                        sdioretsa.spawnAsteroid(gameEntities, testPosition, document.getElementById("asteroid"));
 	
+                        Fireworks.PhysicsSystem(gameEntities);
                         sdioretsa.RenderSystem(gameEntities, bounds, cx);
                                        
 						// Render Cleanup
