@@ -142,6 +142,13 @@ _5gon.push(function(loaded) {
 	};
 	
 	function GravityWellControlSystem(well, set, mouse) {
+		if(mouse.pressed) {
+			set.add(well);
+			well.location.x = mouse.x;
+			well.location.y = mouse.y;
+		} else {
+			set.remove(well);
+		}
 	};
 	
 	function EnemyAiSystem(shipSet, asteroidSet) {
@@ -199,6 +206,7 @@ _5gon.push(function(loaded) {
 		ThrustSystem: ThrustSystem,
 		AngleNormalizeSystem: AngleNormalizeSystem,
 		GravitySystem: GravitySystem,
+		GravityWellControlSystem: GravityWellControlSystem,
 		WrapSystem: WrapSystem,
 		UpdateSpriteFromPhysicsSystem: UpdateSpriteFromPhysicsSystem,
 		RenderSystem: RenderSystem
