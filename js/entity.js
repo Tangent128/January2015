@@ -43,12 +43,14 @@ _5gon.push(function(loaded) {
 		return entityList[index];
 	    };
                      
-        this.clear =  function () {
-                     
-            entityList = [];
-            memberSet = {};
-                     
-        };
+	    this.clear = function () {
+		entityList = [];
+		memberSet = {};
+	    };
+	    
+	    this.contains = function (entity) {
+		return memberSet[entity.id] || false;
+	    };
 
 	};
     

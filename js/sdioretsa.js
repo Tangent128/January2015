@@ -14,6 +14,7 @@ _5gon.push(function(loaded) {
 	/* Helper Functions */
 
     function PhysicsObject(sprite) {
+		Entities.Entity.call(this);
 		this.location = new Entities.Location(0,0);
 		this.velocity = new Entities.Velocity(0,0);
 		this.size = 50;
