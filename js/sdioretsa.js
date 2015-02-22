@@ -75,10 +75,12 @@ _5gon.push(function(loaded) {
 		objects.add(bullet);
     }
                                  
-    function spawnWell(objects, location, image, size) {
+    function spawnWell(objects, image, size) {
     
-		var well = new PhysicsObject(new Sprite(image, size || 50, angle));
-        well.location = location;
+		var well = new PhysicsObject(new Sprite(image, size || 50, 0));
+        well.location = new Entities.Location(0,0);
+                                 
+        return well;
                                  
     }
 	   
@@ -208,6 +210,7 @@ _5gon.push(function(loaded) {
 		spawnAsteroid: spawnAsteroid,
 		spawnShip: spawnShip,
 		spawnBullet: spawnBullet,
+        spawnWell: spawnWell,
 		GameState: GameState,
 		GameResetSystem: GameResetSystem,
 		ThrustSystem: ThrustSystem,

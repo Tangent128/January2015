@@ -33,12 +33,15 @@
                     
                     var gameState = new sdioretsa.GameState();
                     var gameEntities = new Entities.EntitySet();
+                    var gravityEntities = new Entities.EntitySet();
                                                                           
                     var testPosition = new Entities.Location(200,200);
                     var bounds = new Breakout.Rectangle(0, 0, applet.width, applet.height);
-                                                                                      
+                    var mouse = applet.mouse;
+                    
                     sdioretsa.spawnAsteroid(gameEntities, testPosition, document.getElementById("asteroid"));
-                                                                          
+                    var well = sdioretsa.spawnWell(gameEntities, document.getElementById("spiral"));
+                                                                                                   
 					window.setInterval(function() {
 						var cx = applet.context;
 						var k = applet.keys;
@@ -46,9 +49,12 @@
 						// Control
  
 						// Movement
-						
+                                       
                         Fireworks.PhysicsSystem(gameEntities);
                         sdioretsa.WrapSystem(gameEntities, bounds);
+                                       
+                        sdioretsa.GravityWellControlSystem(well, gravityEntities, mouse);
+                        sdioretsa.GravitySystem(gameEntities, gravityEntities, 9.8);
                                        
 						// Logic
 
