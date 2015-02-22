@@ -126,10 +126,10 @@ _5gon.push(function(loaded) {
 	function WrapSystem(set, bounds) {
 		set.each("location", function(entity) {
 			var loc = entity.location;
-			if(loc.x > bounds.x + bounds.w) loc.x += bounds.w;
-			if(loc.y > bounds.y + bounds.h) loc.y += bounds.h;
-			if(loc.x < bounds.x) loc.x -= bounds.w;
-			if(loc.y < bounds.y) loc.y -= bounds.h;
+			if(loc.x > bounds.x + bounds.w) loc.x -= bounds.w;
+			if(loc.y > bounds.y + bounds.h) loc.y -= bounds.h;
+			if(loc.x < bounds.x) loc.x += bounds.w;
+			if(loc.y < bounds.y) loc.y += bounds.h;
 		});
 	};
 	

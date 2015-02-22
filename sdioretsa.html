@@ -52,10 +52,11 @@
                         // State Cleanup
 
 						// Render
-						cx.fillStyle = "#eee";
+						cx.fillStyle = "#000";
 						cx.fillRect(0,0, applet.width, applet.height);
 	
                         Fireworks.PhysicsSystem(gameEntities);
+                        sdioretsa.WrapSystem(gameEntities, bounds);
                         sdioretsa.RenderSystem(gameEntities, bounds, cx);
                                        
 						// Render Cleanup
