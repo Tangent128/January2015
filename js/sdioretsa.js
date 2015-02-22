@@ -35,8 +35,8 @@ _5gon.push(function(loaded) {
 		objects.add(asteroid);
     };
 	   
-    function spawnShip(objects, location, sprite, ai) {
-		var ship = new PhysicsObject(sprite);
+    function spawnShip(objects, location, image, size, ai) {
+		var ship = new PhysicsObject(new Sprite(image, size || 50, 0));
 		   
 		ship.location = location;
 		//ship.sprite.angle = rand(Math.PI * 2);
@@ -58,8 +58,8 @@ _5gon.push(function(loaded) {
     }
 	   
 	   
-    function spawnBullet(objects, location, sprite, angle) {
-		var bullet = new PhysicsObject(sprite);
+    function spawnBullet(objects, location, image, size, angle) {
+		var bullet = new PhysicsObject(new Sprite(image, size || 50, angle));
 		bullet.location = location;
 		// This will now be retrieved from the sprite
 		//bullet.angle = angle;
@@ -73,6 +73,13 @@ _5gon.push(function(loaded) {
 		bullet.lifespan = 3.5;
 		   
 		objects.add(bullet);
+    }
+                                 
+    function spawnWell(objects, location, image, size) {
+    
+		var well = new PhysicsObject(new Sprite(image, size || 50, angle));
+        well.location = location;
+                                 
     }
 	   
 	/* State Objects */
