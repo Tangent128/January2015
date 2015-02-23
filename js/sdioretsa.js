@@ -36,15 +36,14 @@ _5gon.push(function(loaded) {
 		objects.add(asteroid);
     };
 	   
-    function spawnShip(objects, location, image, size, ai) {
+    function spawnShip(objects, location, image, size) {
 		var ship = new PhysicsObject(new Sprite(image, size || 50, 0));
 		   
 		ship.location = location;
 		//ship.sprite.angle = rand(Math.PI * 2);
 		ship.velocity.x = 0;
 		ship.velocity.y = 0;
-		ship.think = ai;
-		ship.gScale = 0;
+		ship.gScale = 1;
 		   
 		ship.angle = 0;
 		ship.thrust = 0;
@@ -55,7 +54,7 @@ _5gon.push(function(loaded) {
 		   
 		objects.add(ship);
 
-		return ship;
+		//return ship;
     }
 	   
 	   

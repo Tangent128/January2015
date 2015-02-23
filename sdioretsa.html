@@ -36,10 +36,12 @@
                     var gravityEntities = new Entities.EntitySet();
                                                                           
                     var testPosition = new Entities.Location(200,200);
+                    var testPosition2 = new Entities.Location(500,200);
                     var bounds = new Breakout.Rectangle(0, 0, applet.width, applet.height);
                     var mouse = applet.mouse;
                     
                     sdioretsa.spawnAsteroid(gameEntities, testPosition, document.getElementById("asteroid"));
+                    sdioretsa.spawnShip(gameEntities, testPosition2, document.getElementById("ship"));
                     var well = sdioretsa.spawnWell(gameEntities, document.getElementById("spiral"));
                                                                                                    
 					window.setInterval(function() {
