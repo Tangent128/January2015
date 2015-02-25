@@ -48,6 +48,8 @@ _5gon.push(function(loaded) {
 		ship.angle = 0;
 		ship.thrust = 0;
 		
+		ship.attackTarget = null;
+		
 		ship.cooldown = 0;
 		   
 		ship.isShip = true;
@@ -57,8 +59,8 @@ _5gon.push(function(loaded) {
 		//return ship;
     }
 	   
-	   
-    function spawnBullet(objects, location, image, size, angle) {
+	// TODO: use entity.js timer/dieOnTimeout components for lifespan instead
+    function spawnBullet(objects, location, image, angle, size) {
 		var bullet = new PhysicsObject(new Sprite(image, size || 50, angle));
 		bullet.location = location;
 		// This will now be retrieved from the sprite
@@ -160,7 +162,66 @@ _5gon.push(function(loaded) {
 		}
 	};
 	
-	function EnemyAiSystem(shipSet, asteroidSet) {
+	function EnemyAiTargetingSystem(timeScale, shipSet, asteroidSet) {
+		shipSet.each(function(ship) {
+			
+			// Find the nearest object
+			var nearestRock = null;
+			var nearestDist = 0;
+
+			asteroidSet.each(function(object) {
+				if (object.isAsteroid) {
+					var dx = object.location.x - ship.location.x;
+					var dy = object.location.y - ship.location.y;
+					var dist = Math.sqrt(dx*dx + dy*dy);
+					if (dist < nearestDist || nearestRock == null) {
+						nearestDist = dist;
+						nearestRock = object;
+					}
+				}
+			});
+			
+			ship.attackTarget = nearestRock;
+		});
+	};
+	function EnemyAiNavSystem(timeScale, shipSet, asteroidSet, turnSpeed) {
+		
+		shipSet.each(function(ship) {
+		
+			var nearestRock = ship.attackTarget;
+			if(attackTarget == null) { return; }
+			
+			// Turn towards target
+
+			var dx = nearestRock.location.x - ship.x;
+			var dy = nearestRock.location.y - ship.y;
+
+			var targetAngle = Math.atan2(dx, -dy);
+
+			var angleDiff = targetAngle - ship.angle;
+
+			if(angleDiff > Math.PI) angleDiff -= TAU;
+			if(angleDiff < -Math.PI) angleDiff += TAU;
+
+			if(angleDiff > 0) {
+				ship.angle += turnSpeed * timeScale;
+			} else {
+				ship.angle -= turnSpeed * timeScale;
+			}
+			
+		});
+
+	};
+
+	function EnemyAiGunSystem(timeScale, shipSet, bulletSet, rate) {
+		shipSet.each(function(ship) {
+			ship.cooldown -= timeScale;
+
+			if (ship.cooldown <= 0) {
+				ship.cooldown = rate;
+				spawnBullet(bulletSet, ship.x, ship.y, resource.bullet, ship.angle);
+			}
+		});
 	};
 
 	function GameWinLossSystem(set, messageBox, winMessage, loseMessage) {
