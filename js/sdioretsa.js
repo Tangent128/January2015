@@ -63,11 +63,8 @@ _5gon.push(function(loaded) {
     function spawnBullet(objects, location, image, angle, size) {
 		var bullet = new PhysicsObject(new Sprite(image, size || 50, angle));
 		bullet.location = location;
-		// This will now be retrieved from the sprite
-		//bullet.angle = angle;
 		bullet.velocity.x = 75 * Math.sin(angle);
 		bullet.velocity.y = 75 * Math.cos(angle);
-		bullet.think = bulletThink;
 		bullet.gScale = 0;
 		   
 		bullet.isBullet = true;
@@ -189,7 +186,7 @@ _5gon.push(function(loaded) {
 		shipSet.each(function(ship) {
 		
 			var nearestRock = ship.attackTarget;
-			if(attackTarget == null) { return; }
+			if(nearestRock == null) { return; }
 			
 			// Turn towards target
 
@@ -213,13 +210,13 @@ _5gon.push(function(loaded) {
 
 	};
 
-	function EnemyAiGunSystem(timeScale, shipSet, bulletSet, rate) {
+	function EnemyAiGunSystem(timeScale, shipSet, bulletSet, bulletSprite, rate) {
 		shipSet.each(function(ship) {
 			ship.cooldown -= timeScale;
 
 			if (ship.cooldown <= 0) {
 				ship.cooldown = rate;
-				spawnBullet(bulletSet, ship.x, ship.y, resource.bullet, ship.angle);
+				spawnBullet(bulletSet, ship.x, ship.y, bulletSprite, ship.angle);
 			}
 		});
 	};
