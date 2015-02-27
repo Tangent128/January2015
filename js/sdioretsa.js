@@ -46,7 +46,7 @@ _5gon.push(function(loaded) {
 		ship.gScale = 1;
 		   
 		ship.angle = 0;
-		ship.thrust = 0;
+		ship.thrust = 5;
 		
 		ship.attackTarget = null;
 		
@@ -101,7 +101,7 @@ _5gon.push(function(loaded) {
 	function GameResetSystem(set) {
 	};
 	
-	function ThrustSystem(set) {
+	function ThrustSystem(set, timeScale) {
 		set.each("thrust", function(entity) {
 			var v = entity.velocity;
 			var t = entity.thrust;
