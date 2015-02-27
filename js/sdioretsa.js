@@ -60,9 +60,10 @@ _5gon.push(function(loaded) {
     }
 	   
 	// TODO: use entity.js timer/dieOnTimeout components for lifespan instead
-    function spawnBullet(objects, location, image, angle, size) {
+    function spawnBullet(objects, x, y, image, angle, size) {
 		var bullet = new PhysicsObject(new Sprite(image, size || 50, angle));
-		bullet.location = location;
+		bullet.location.x = x;
+		bullet.location.y = y;
 		bullet.velocity.x = 75 * Math.sin(angle);
 		bullet.velocity.y = 75 * Math.cos(angle);
 		bullet.gScale = 0;
