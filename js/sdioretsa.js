@@ -191,10 +191,10 @@ _5gon.push(function(loaded) {
 			
 			// Turn towards target
 
-			var dx = nearestRock.location.x - ship.x;
-			var dy = nearestRock.location.y - ship.y;
+			var dx = nearestRock.location.x - ship.location.x;
+			var dy = nearestRock.location.y - ship.location.y;
 
-			var targetAngle = Math.atan2(dx, -dy);
+			var targetAngle = Math.atan2(nearestRock.location.x, ship.location.x);
 
 			var angleDiff = targetAngle - ship.angle;
 
@@ -203,6 +203,7 @@ _5gon.push(function(loaded) {
 
 			if(angleDiff > 0) {
 				ship.angle += turnSpeed * timeScale;
+				console.log("nearestRock", ship.angle, turnSpeed, timeScale);
 			} else {
 				ship.angle -= turnSpeed * timeScale;
 			}
@@ -254,7 +255,7 @@ _5gon.push(function(loaded) {
 			var xSign = (loc.x > bounds.x + bounds.w / 2) ? -1 : 1;
 			var ySign = (loc.y > bounds.y + bounds.h / 2) ? -1 : 1;
 			
-        	console.log(entity.sprite);
+        	//console.log(entity.sprite);
                  
 			drawAt(entity.sprite, loc.x, loc.y);
 			drawAt(entity.sprite, loc.x + bounds.w * xSign, loc.y);
