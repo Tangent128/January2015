@@ -204,10 +204,10 @@ _5gon.push(function(loaded) {
 			if(angleDiff > Math.PI) angleDiff -= TAU;
 			if(angleDiff < -Math.PI) angleDiff += TAU;
 
-			if(angleDiff > 0) {
-				ship.angle += turnSpeed * timeScale;
-			} else {
-				ship.angle -= turnSpeed * timeScale;
+			if(angleDiff > 0.1) {
+				ship.angle += turnSpeed * timeScale * 0.5;
+			} else if (angleDiff < -0.1) {
+				ship.angle -= turnSpeed * timeScale * 0.5;
 			}
 			
 		});
