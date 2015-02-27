@@ -56,6 +56,8 @@
                                        
                         Fireworks.PhysicsSystem(gameEntities);
                         sdioretsa.WrapSystem(gameEntities, bounds);
+                        sdioretsa.WrapSystem(shipEntities, bounds);
+                        sdioretsa.WrapSystem(bulletEntities, bounds);
                                        
                         sdioretsa.GravityWellControlSystem(well, gravityEntities, mouse);
                         sdioretsa.GravitySystem(gameEntities, gravityEntities, 9.8);
@@ -64,7 +66,7 @@
 
                         sdioretsa.EnemyAiTargetingSystem(10, shipEntities, gameEntities);
                         sdioretsa.EnemyAiNavSystem(10, shipEntities, gameEntities, Math.PI * 2);
-                        sdioretsa.EnemyAiGunSystem(10, shipEntities, bulletEntities, 1);
+                        sdioretsa.EnemyAiGunSystem(10, shipEntities, bulletEntities, document.getElementById("bullet"), 1);
                                        
                         // State Cleanup
 

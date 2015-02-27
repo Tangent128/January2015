@@ -217,7 +217,7 @@ _5gon.push(function(loaded) {
 
 			if (ship.cooldown <= 0) {
 				ship.cooldown = rate;
-				spawnBullet(bulletSet, ship.x, ship.y, bulletSprite, ship.angle);
+				spawnBullet(bulletSet, ship.location.x, ship.location.y, bulletSprite, ship.angle);
 			}
 		});
 	};
@@ -254,6 +254,8 @@ _5gon.push(function(loaded) {
 			var xSign = (loc.x > bounds.x + bounds.w / 2) ? -1 : 1;
 			var ySign = (loc.y > bounds.y + bounds.h / 2) ? -1 : 1;
 			
+        	console.log(entity.sprite);
+                 
 			drawAt(entity.sprite, loc.x, loc.y);
 			drawAt(entity.sprite, loc.x + bounds.w * xSign, loc.y);
 			drawAt(entity.sprite, loc.x, loc.y + bounds.h * ySign);
