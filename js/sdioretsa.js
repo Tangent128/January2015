@@ -59,13 +59,13 @@ _5gon.push(function(loaded) {
 		//return ship;
     }
 	   
-	// TODO: use entity.js timer/dieOnTimeout components for lifespan instead
+	var BULLET_SPEED = 3;
     function spawnBullet(objects, x, y, image, angle, size) {
 		var bullet = new PhysicsObject(new Sprite(image, size || 50, angle));
 		bullet.location.x = x;
 		bullet.location.y = y;
-		bullet.velocity.x = 75 * Math.sin(angle);
-		bullet.velocity.y = 75 * Math.cos(angle);
+		bullet.velocity.x = BULLET_SPEED * Math.sin(angle);
+		bullet.velocity.y = BULLET_SPEED * -Math.cos(angle);
 		bullet.gScale = 0;
 		   
 		bullet.isBullet = true;
@@ -197,7 +197,7 @@ _5gon.push(function(loaded) {
 			var dx = nearestRock.location.x - ship.location.x;
 			var dy = nearestRock.location.y - ship.location.y;
 
-			var targetAngle = Math.atan2(nearestRock.location.x, ship.location.x);
+			var targetAngle = Math.atan2(dx, -dy);
 
 			var angleDiff = targetAngle - ship.angle;
 
