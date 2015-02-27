@@ -280,7 +280,10 @@ _5gon.push(function(loaded) {
 		GravityWellControlSystem: GravityWellControlSystem,
 		WrapSystem: WrapSystem,
 		UpdateSpriteFromPhysicsSystem: UpdateSpriteFromPhysicsSystem,
-		RenderSystem: RenderSystem
+		RenderSystem: RenderSystem,
+        EnemyAiTargetingSystem: EnemyAiTargetingSystem,
+        EnemyAiNavSystem: EnemyAiNavSystem,
+        EnemyAiGunSystem: EnemyAiGunSystem
 	});
     });
 });

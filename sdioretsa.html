@@ -33,7 +33,9 @@
                     
                     var gameState = new sdioretsa.GameState();
                     var gameEntities = new Entities.EntitySet();
+                    var shipEntities = new Entities.EntitySet();
                     var gravityEntities = new Entities.EntitySet();
+                    var bulletEntities = new Entities.EntitySet();
                                                                           
                     var testPosition = new Entities.Location(200,200);
                     var testPosition2 = new Entities.Location(500,200);
@@ -41,7 +43,7 @@
                     var mouse = applet.mouse;
                     
                     sdioretsa.spawnAsteroid(gameEntities, testPosition, document.getElementById("asteroid"));
-                    sdioretsa.spawnShip(gameEntities, testPosition2, document.getElementById("ship"));
+                    sdioretsa.spawnShip(shipEntities, testPosition2, document.getElementById("ship"));
                     var well = sdioretsa.spawnWell(gameEntities, document.getElementById("spiral"));
                                                                                                    
 					window.setInterval(function() {
@@ -58,10 +60,12 @@
                         sdioretsa.GravityWellControlSystem(well, gravityEntities, mouse);
                         sdioretsa.GravitySystem(gameEntities, gravityEntities, 9.8);
                         
-                        //console.log(gravityEntities.contains(well));
-                        
 						// Logic
 
+                        sdioretsa.EnemyAiTargetingSystem(10, shipEntities, gameEntities);
+                        sdioretsa.EnemyAiNavSystem(10, shipEntities, gameEntities, Math.PI * 2);
+                        sdioretsa.EnemyAiGunSystem(10, shipEntities, bulletEntities, 1);
+                                       
                         // State Cleanup
 
 						// Render
@@ -70,6 +74,8 @@
 	
                         sdioretsa.RenderSystem(gameEntities, bounds, cx);
                         sdioretsa.RenderSystem(gravityEntities, bounds, cx);
+                        sdioretsa.RenderSystem(shipEntities, bounds, cx);
+                        sdioretsa.RenderSystem(bulletEntities, bounds, cx);
                                        
 						// Render Cleanup
 						
