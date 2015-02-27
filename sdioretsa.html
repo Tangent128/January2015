@@ -45,7 +45,8 @@
                     sdioretsa.spawnAsteroid(gameEntities, testPosition, document.getElementById("asteroid"));
                     sdioretsa.spawnShip(shipEntities, testPosition2, document.getElementById("ship"));
                     var well = sdioretsa.spawnWell(gameEntities, document.getElementById("spiral"));
-                                                                                                   
+                                             
+                    var tickLength = 1/60;
 					window.setInterval(function() {
 						var cx = applet.context;
 						var k = applet.keys;
@@ -53,10 +54,17 @@
 						// Control
  
 						// Movement
+ 
+                        Entities.TimerTickSystem(bulletEntities, tickLength);
                                        
-                        sdioretsa.ThrustSystem(shipEntities, 1/30);
+                        sdioretsa.UpdateSpriteFromPhysicsSystem(shipEntities);
+                                       
+                        sdioretsa.ThrustSystem(shipEntities, tickLength);
                         Fireworks.PhysicsSystem(gameEntities);
                         Fireworks.PhysicsSystem(shipEntities);
+                                       
+                        Fireworks.PhysicsSystem(bulletEntities);
+
                         sdioretsa.WrapSystem(gameEntities, bounds);
                         sdioretsa.WrapSystem(shipEntities, bounds);
                         sdioretsa.WrapSystem(bulletEntities, bounds);
@@ -64,15 +72,18 @@
                         sdioretsa.GravityWellControlSystem(well, gravityEntities, mouse);
                         sdioretsa.GravitySystem(gameEntities, gravityEntities, 9.8);
                         sdioretsa.GravitySystem(shipEntities, gravityEntities, 9.8);
-                        
+            
+                                       
 						// Logic
 
-                        sdioretsa.EnemyAiTargetingSystem(1/30, shipEntities, gameEntities);
-                        sdioretsa.EnemyAiNavSystem(1/30, shipEntities, gameEntities, Math.PI * 2);
-                        sdioretsa.EnemyAiGunSystem(1/30, shipEntities, bulletEntities, document.getElementById("bullet"), 1/30);
+                        sdioretsa.EnemyAiTargetingSystem(tickLength, shipEntities, gameEntities);
+                        sdioretsa.EnemyAiNavSystem(tickLength, shipEntities, gameEntities, Math.PI * 2);
+                        sdioretsa.EnemyAiGunSystem(tickLength, shipEntities, bulletEntities, document.getElementById("bullet"), 1);
                                        
                         // State Cleanup
 
+                        Entities.TimerExpireSystem(bulletEntities);
+                                       
 						// Render
 						cx.fillStyle = "#000";
 						cx.fillRect(0,0, applet.width, applet.height);

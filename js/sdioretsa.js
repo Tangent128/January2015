@@ -71,7 +71,9 @@ _5gon.push(function(loaded) {
 		bullet.isBullet = true;
 		   
 		bullet.lifespan = 3.5;
-		   
+        bullet.timer = new Entities.Timer(bullet.lifespan);
+        bullet.dieOnTimeout = true;
+                                 
 		objects.add(bullet);
     }
                                  
@@ -228,7 +230,7 @@ _5gon.push(function(loaded) {
 
 	function UpdateSpriteFromPhysicsSystem(set) {
 		set.each("sprite", function(entity) {
-			var sprite = entty.sprite;
+			var sprite = entity.sprite;
 			
 			if("angle" in entity) {
 				sprite.angle = entity.angle;
