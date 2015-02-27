@@ -46,7 +46,7 @@ _5gon.push(function(loaded) {
 		ship.gScale = 1;
 		   
 		ship.angle = 0;
-		ship.thrust = 5;
+		ship.thrust = -0.5;
 		
 		ship.attackTarget = null;
 		
@@ -106,8 +106,9 @@ _5gon.push(function(loaded) {
 			var v = entity.velocity;
 			var t = entity.thrust;
 			var a = entity.angle;
-			this.vx += t * Math.sin(a) * timeScale;
-			this.vy += t * Math.cos(a) * timeScale;
+			v.x += t * Math.sin(a) * timeScale;
+			v.y += t * Math.cos(a) * timeScale;
+			//console.log("v", v.x, v.y);
 		});
 	};
 	
@@ -203,7 +204,6 @@ _5gon.push(function(loaded) {
 
 			if(angleDiff > 0) {
 				ship.angle += turnSpeed * timeScale;
-				console.log("nearestRock", ship.angle, turnSpeed, timeScale);
 			} else {
 				ship.angle -= turnSpeed * timeScale;
 			}
