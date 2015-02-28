@@ -52,6 +52,10 @@ _5gon.push(function(loaded) {
 		return memberSet[entity.id] || false;
 	    };
 
+	    this.isEmpty = function () {
+		return entityList.length == 0;
+	    };
+	    
 	};
     
 	function Entity() {

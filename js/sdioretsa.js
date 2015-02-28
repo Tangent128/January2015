@@ -252,9 +252,23 @@ _5gon.push(function(loaded) {
 		});
 	};
 
-	function GameWinLossSystem(set, messageBox, winMessage, loseMessage) {
+	function GameWinLossSystem(asteroidSet, shipSet, gameState) {
+		if(gameState.state == "playing") {
+		
+			if(asteroidSet.isEmpty()) {
+				gameState.state = "lost";
+			}
+			
+			if(shipSet.isEmpty()) {
+				gameState.state = "won";
+			}
+		
+		}
 	};
 
+	function GameStateMessageSystem(messageSet, gameState, messageBox) {
+	};
+	
 	function UpdateSpriteFromPhysicsSystem(set) {
 		set.each("sprite", function(entity) {
 			var sprite = entity.sprite;
