@@ -235,8 +235,8 @@ _5gon.push(function(loaded) {
 			groupB.each(function(b) {
 				if (a == b) {return;}
 				
-				var dx = objects[i].x - objects[j].x;
-				var dy = objects[i].y - objects[j].y;
+				var dx = a.location.x - b.location.x;
+				var dy = a.location.y - b.location.y;
 				
 				var dist = Math.sqrt(dx*dx + dy*dy);
 				var sizeSum = a.size + b.size;
@@ -251,6 +251,30 @@ _5gon.push(function(loaded) {
 			});
 		});
 	};
+                                 
+    function BulletCollisionSystem(collisionGroup) {
+    
+        collisionGroup.each(function (collision) {
+                                 
+            // Assumes asteroid-bullet collisions are passed as asteroid=groupA / bullet=groupB
+            if(collision.colliderA.isAsteroid && collision.colliderB.isBullet) {
+                collision.colliderA.isDead=true;
+                collision.colliderB.isDead=true;
+            }
+
+        });
+    }
+                                 
+    function ShipCollisionSystem(collisionGroup) {
+                                 
+        collisionGroup.each(function (collision) {
+                                                     
+            // Assumes asteroid-ship collisions are passed as asteroid=groupA / ship=groupB
+            if(collision.colliderA.isAsteroid && collision.colliderB.isShip) {
+                collision.colliderB.isDead=true;
+            }
+        });
+    }
 
 	function GameWinLossSystem(asteroidSet, shipSet, gameState) {
 		if(gameState.state == "playing") {
@@ -327,7 +351,10 @@ _5gon.push(function(loaded) {
 		RenderSystem: RenderSystem,
         EnemyAiTargetingSystem: EnemyAiTargetingSystem,
         EnemyAiNavSystem: EnemyAiNavSystem,
-        EnemyAiGunSystem: EnemyAiGunSystem
+        EnemyAiGunSystem: EnemyAiGunSystem,
+        CollisionGenerationSystem:CollisionGenerationSystem,
+        BulletCollisionSystem:BulletCollisionSystem,
+        ShipCollisionSystem:ShipCollisionSystem
 	});
     });
 });
