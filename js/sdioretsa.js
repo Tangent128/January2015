@@ -277,16 +277,12 @@ _5gon.push(function(loaded) {
     }
 
 	function GameWinLossSystem(asteroidSet, shipSet, gameState) {
-		if(gameState.state == "playing") {
+		if(asteroidSet.isEmpty()) {
+			gameState.state = "lost";
+		}
 		
-			if(asteroidSet.isEmpty()) {
-				gameState.state = "lost";
-			}
-			
-			if(shipSet.isEmpty()) {
-				gameState.state = "won";
-			}
-		
+		if(shipSet.isEmpty()) {
+			gameState.state = "won";
 		}
 	};
 
@@ -354,7 +350,8 @@ _5gon.push(function(loaded) {
         EnemyAiGunSystem: EnemyAiGunSystem,
         CollisionGenerationSystem:CollisionGenerationSystem,
         BulletCollisionSystem:BulletCollisionSystem,
-        ShipCollisionSystem:ShipCollisionSystem
+        ShipCollisionSystem:ShipCollisionSystem,
+        GameWinLossSystem: GameWinLossSystem
 	});
     });
 });

@@ -32,11 +32,15 @@
 					var tickLength = 1/60;
                     
                     var gameState = new sdioretsa.GameState();
+                    
+                    // no start screen yet, start game manually:
+                    gameState.state = "playing";
+                    
                     var asteroidEntities = new Entities.EntitySet();
                     var shipEntities = new Entities.EntitySet();
                     var gravityEntities = new Entities.EntitySet();
                     var bulletEntities = new Entities.EntitySet();
-                    var collisionGroups = new Entities.EntitySet();
+                    var collisionGroup = new Entities.EntitySet();
                                                                           
                     var testPosition = new Entities.Location(200,200);
                     var testPosition2 = new Entities.Location(500,200);
@@ -50,52 +54,62 @@
                     var tickLength = 1/60;
 					window.setInterval(function() {
 						var cx = applet.context;
-						var k = applet.keys;
-                            
-						// Control
- 
-						// Movement
- 
-                        Entities.TimerTickSystem(bulletEntities, tickLength);
-                                       
-                        sdioretsa.UpdateSpriteFromPhysicsSystem(shipEntities);
-                                       
-                        sdioretsa.ThrustSystem(shipEntities, tickLength);
-                        Fireworks.PhysicsSystem(asteroidEntities);
-                        Fireworks.PhysicsSystem(shipEntities);
-                                       
-                        Fireworks.PhysicsSystem(bulletEntities);
-
-                        sdioretsa.WrapSystem(asteroidEntities, bounds);
-                        sdioretsa.WrapSystem(shipEntities, bounds);
-                        sdioretsa.WrapSystem(bulletEntities, bounds);
-                                       
-                        sdioretsa.GravityWellControlSystem(well, gravityEntities, mouse);
-                        sdioretsa.GravitySystem(asteroidEntities, gravityEntities, 9.8);
-                        //sdioretsa.GravitySystem(shipEntities, gravityEntities, 4.9);
-                                       
-						// Logic
-
-                        sdioretsa.EnemyAiTargetingSystem(tickLength, shipEntities, asteroidEntities);
-                        sdioretsa.EnemyAiNavSystem(tickLength, shipEntities, asteroidEntities, Math.PI * 4);
-                        sdioretsa.EnemyAiGunSystem(tickLength, shipEntities, bulletEntities, document.getElementById("bullet"), 1);
-                                       
-                        // Collisions
                         
-                        	// First detect collisions
+                        if(gameState.state == "playing") {
                         
-                        sdioretsa.CollisionGenerationSystem(asteroidEntities, bulletEntities, collisionGroups);
-                        sdioretsa.CollisionGenerationSystem(asteroidEntities, shipEntities, collisionGroups);
-                                       
-                            // Then mark dead objects
-                                       
-                        sdioretsa.BulletCollisionSystem(collisionGroups);
-                        sdioretsa.ShipCollisionSystem(collisionGroups);
-                                       
-                        // State Cleanup
+							// Control
 
-                        Entities.TimerExpireSystem(bulletEntities);
-                                       
+							sdioretsa.GravityWellControlSystem(well, gravityEntities, mouse);
+	 
+							// Movement
+	 
+							Entities.TimerTickSystem(bulletEntities, tickLength);
+										   
+							sdioretsa.UpdateSpriteFromPhysicsSystem(shipEntities);
+										   
+							sdioretsa.ThrustSystem(shipEntities, tickLength);
+							Fireworks.PhysicsSystem(asteroidEntities);
+							Fireworks.PhysicsSystem(shipEntities);
+										   
+							Fireworks.PhysicsSystem(bulletEntities);
+
+							sdioretsa.WrapSystem(asteroidEntities, bounds);
+							sdioretsa.WrapSystem(shipEntities, bounds);
+							sdioretsa.WrapSystem(bulletEntities, bounds);
+							
+							sdioretsa.GravitySystem(asteroidEntities, gravityEntities, 9.8);
+							//sdioretsa.GravitySystem(shipEntities, gravityEntities, 4.9);
+										   
+							// Logic
+
+							sdioretsa.EnemyAiTargetingSystem(tickLength, shipEntities, asteroidEntities);
+							sdioretsa.EnemyAiNavSystem(tickLength, shipEntities, asteroidEntities, Math.PI * 4);
+							sdioretsa.EnemyAiGunSystem(tickLength, shipEntities, bulletEntities, document.getElementById("bullet"), 1);
+										   
+							// Collisions
+							
+								// First detect collisions
+							
+							sdioretsa.CollisionGenerationSystem(asteroidEntities, bulletEntities, collisionGroup);
+							sdioretsa.CollisionGenerationSystem(asteroidEntities, shipEntities, collisionGroup);
+										   
+								// Then mark dead objects
+										   
+							sdioretsa.BulletCollisionSystem(collisionGroup);
+							sdioretsa.ShipCollisionSystem(collisionGroup);
+							
+							// State Cleanup
+							
+							collisionGroup.clear();
+
+							Entities.TimerExpireSystem(bulletEntities);
+							Breakout.ReaperSystem(asteroidEntities);
+							Breakout.ReaperSystem(shipEntities);
+							Breakout.ReaperSystem(bulletEntities);
+                        
+							sdioretsa.GameWinLossSystem(asteroidEntities, shipEntities, gameState);
+						}
+						
 						// Render
 						cx.fillStyle = "#000";
 						cx.fillRect(0,0, applet.width, applet.height);
@@ -106,10 +120,6 @@
                         sdioretsa.RenderSystem(bulletEntities, bounds, cx);
                                        
 						// Render Cleanup
-                                       
-                        Breakout.ReaperSystem(asteroidEntities);
-                        Breakout.ReaperSystem(shipEntities);
-                        Breakout.ReaperSystem(bulletEntities);
 						
 					}, tickLength*1000);
 				});
