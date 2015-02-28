@@ -225,6 +225,33 @@ _5gon.push(function(loaded) {
 		});
 	};
 
+	/**
+	 * Identify overlapping objects and add an entity to collisionGroup
+	 * for each one. (remember to clear collisionGroup at the end of
+	 * each frame)
+	 */
+	function CollisionGenerationSystem(groupA, groupB, collisionGroup) {
+		groupA.each(function(a) {
+			groupB.each(function(b) {
+				if (a == b) {return;}
+				
+				var dx = objects[i].x - objects[j].x;
+				var dy = objects[i].y - objects[j].y;
+				
+				var dist = Math.sqrt(dx*dx + dy*dy);
+				var sizeSum = a.size + b.size;
+				sizeSum /= 3; // 2 is more "correct", but 3 looks more intuitive.
+				
+				if(dist < sizeSum) {
+					var collision = new Entities.Entity();
+					collision.colliderA = a;
+					collision.colliderB = b;
+					collisionGroup.add(collision);
+				}
+			});
+		});
+	};
+
 	function GameWinLossSystem(set, messageBox, winMessage, loseMessage) {
 	};
 
