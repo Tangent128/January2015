@@ -17,14 +17,14 @@ _5gon.push(function(loaded) {
 		Entities.Entity.call(this);
 		this.location = new Entities.Location(0,0);
 		this.velocity = new Entities.Velocity(0,0);
-		this.size = 50;
+		this.size = sprite.size;
 		this.sprite = sprite;
 		this.gScale = 1;
     };
     
     function spawnAsteroid(splits, objects, location, image, size) {
         var spawnAngle = (Math.random()) * (Math.PI * 2);
-		var asteroid = new PhysicsObject(new Sprite(image, size || 50, spawnAngle));
+		var asteroid = new PhysicsObject(new Sprite(image, size || 60, spawnAngle));
 		   
         asteroid.splits = splits;
 		asteroid.location = location;
@@ -39,7 +39,7 @@ _5gon.push(function(loaded) {
     };
 	   
     function spawnShip(objects, location, image, size) {
-		var ship = new PhysicsObject(new Sprite(image, size || 50, 0));
+		var ship = new PhysicsObject(new Sprite(image, size || 60, 0));
 		   
 		ship.location = location;
 		//ship.sprite.angle = rand(Math.PI * 2);
@@ -63,7 +63,7 @@ _5gon.push(function(loaded) {
 	   
 	var BULLET_SPEED = 3;
     function spawnBullet(objects, x, y, image, angle, size) {
-		var bullet = new PhysicsObject(new Sprite(image, size || 50, angle));
+		var bullet = new PhysicsObject(new Sprite(image, size || 60, angle));
 		bullet.location.x = x;
 		bullet.location.y = y;
 		bullet.velocity.x = BULLET_SPEED * Math.sin(angle);
@@ -81,7 +81,7 @@ _5gon.push(function(loaded) {
                                  
     function spawnWell(objects, image, size) {
     
-		var well = new PhysicsObject(new Sprite(image, size || 50, 0));
+		var well = new PhysicsObject(new Sprite(image, size || 60, 0));
         well.location = new Entities.Location(0,0);
                                  
         return well;
@@ -287,6 +287,8 @@ _5gon.push(function(loaded) {
                 var locationA = new Entities.Location(asteroid.location.x + (asteroid.size * Math.cos(angleA)), asteroid.location.y + (asteroid.size * Math.sin(angleA)));
                 
                 var locationB = new Entities.Location(asteroid.location.x + (asteroid.size * Math.cos(angleB)), asteroid.location.y + (asteroid.size * Math.sin(angleB)));
+                   
+                         console.log(asteroid.size/2);
                          
                 spawnAsteroid(asteroid.splits-1, asteroidSet, locationA, asteroid.image, (asteroid.size/2));
                 spawnAsteroid(asteroid.splits-1, asteroidSet, locationB, asteroid.image, (asteroid.size/2));
