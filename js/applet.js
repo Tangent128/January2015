@@ -62,15 +62,22 @@ _5gon.push(function(loaded) {
 		};
 	}
 	
-	/* Constructor takes a jQuery-wrapped <canvas> tag,
-	 * preps it for keyboard events.
+	/* Constructor takes a jQuery-wrapped <canvas> tag (optionally
+	 * with <div> wrappers) and preps it for keyboard events.
 	 * Can pass in an existing KeyControl if multiple applets
 	 * need to share it, else it will create a new one. */
-	function Applet($canvas, keys, mouse) {
+	function Applet($applet, keys, mouse) {
+		var $canvas;
+		if($applet.is("canvas")) {
+			$canvas = $applet;
+		} else {
+			$canvas = $applet.find("canvas");
+		}
+		
 		var canvasTag = $canvas[0];
 		this.context = canvasTag.getContext("2d");
-		this.width = canvasTag.width;
-		this.height = canvasTag.height;
+		this.width = $applet.width();
+		this.height = $applet.height();
 		
 		// make canvas focusable if it isn't already
 		var tabindex = $canvas.attr("tabindex");
@@ -83,13 +90,13 @@ _5gon.push(function(loaded) {
 			keys = new KeyControl();
 		}
 		
-		keys.listenTo($canvas);
+		keys.listenTo($applet);
 		
 		this.keys = keys;
 		
 		// make new mouse control
 		this.mouse = new MouseControl();
-		this.mouse.listenTo($canvas);
+		this.mouse.listenTo($applet);
 	};
 
 	/* Exports */
