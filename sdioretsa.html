@@ -47,7 +47,7 @@
                     var bounds = new Breakout.Rectangle(0, 0, applet.width, applet.height);
                     var mouse = applet.mouse;
                     
-                    sdioretsa.spawnAsteroid(asteroidEntities, testPosition, document.getElementById("asteroid"));
+                    sdioretsa.spawnAsteroid(2, asteroidEntities, testPosition, document.getElementById("asteroid"));
                     sdioretsa.spawnShip(shipEntities, testPosition2, document.getElementById("ship"));
                     var well = sdioretsa.spawnWell(asteroidEntities, document.getElementById("spiral"));
                                              
@@ -98,6 +98,8 @@
 							sdioretsa.BulletCollisionSystem(collisionGroup);
 							sdioretsa.ShipCollisionSystem(collisionGroup);
 							
+                            sdioretsa.AsteroidSplitSystem(asteroidEntities);
+                                       
 							// State Cleanup
 							
 							collisionGroup.clear();

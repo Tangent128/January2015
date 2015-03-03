@@ -22,15 +22,17 @@ _5gon.push(function(loaded) {
 		this.gScale = 1;
     };
     
-    function spawnAsteroid(objects, location, image, size) {
+    function spawnAsteroid(splits, objects, location, image, size) {
         var spawnAngle = (Math.random()) * (Math.PI * 2);
 		var asteroid = new PhysicsObject(new Sprite(image, size || 50, spawnAngle));
 		   
+        asteroid.splits = splits;
 		asteroid.location = location;
         asteroid.angle = spawnAngle;
 		asteroid.velocity.x = Math.cos(asteroid.angle) * 1;
 		asteroid.velocity.y = Math.sin(asteroid.angle) * 1;
-		   
+        asteroid.image = image;
+                                 
 		asteroid.isAsteroid = true;
 		   
 		objects.add(asteroid);
@@ -276,6 +278,22 @@ _5gon.push(function(loaded) {
         });
     }
 
+    function AsteroidSplitSystem(asteroidSet) {
+        asteroidSet.each(function(asteroid) {
+            if (asteroid.isDead && (asteroid.splits > 0)) {
+                var angleA = Math.random() * Math.PI * 2;
+                var angleB = Math.random() * Math.PI * 2;
+                         
+                var locationA = new Entities.Location(asteroid.location.x + (asteroid.size * Math.cos(angleA)), asteroid.location.y + (asteroid.size * Math.sin(angleA)));
+                
+                var locationB = new Entities.Location(asteroid.location.x + (asteroid.size * Math.cos(angleB)), asteroid.location.y + (asteroid.size * Math.sin(angleB)));
+                         
+                spawnAsteroid(asteroid.splits-1, asteroidSet, locationA, asteroid.image, (asteroid.size/2));
+                spawnAsteroid(asteroid.splits-1, asteroidSet, locationB, asteroid.image, (asteroid.size/2));
+            }
+        });
+    }
+                                 
 	function GameWinLossSystem(asteroidSet, shipSet, gameState) {
 		if(asteroidSet.isEmpty()) {
 			gameState.state = "lost";
@@ -351,7 +369,8 @@ _5gon.push(function(loaded) {
         CollisionGenerationSystem:CollisionGenerationSystem,
         BulletCollisionSystem:BulletCollisionSystem,
         ShipCollisionSystem:ShipCollisionSystem,
-        GameWinLossSystem: GameWinLossSystem
+        GameWinLossSystem: GameWinLossSystem,
+        AsteroidSplitSystem: AsteroidSplitSystem
 	});
     });
 });
