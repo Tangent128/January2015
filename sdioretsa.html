@@ -1,5 +1,6 @@
 <html>
 	<head>
+		<title>Sdioretsa 1.1</title>
 		<script src="js/loader.js" type="application/javascript" async="async"></script>
 		<script src="js/applet.js" type="application/javascript" async="async"></script>
 		<script src="js/entity.js" type="application/javascript" async="async"></script>
@@ -20,7 +21,7 @@
 				
 				loaded("$.ready", "Applet", "Fireworks", "sdioretsa", "Breakout", "Entities").then(
 				function($, Applet, Fireworks, sdioretsa, Breakout, Entities) {
-					var $gameCanvas = $("#gameCanvas");
+					var $gameCanvas = $(".SdioretsaCanvas");
 					var applet = new Applet($gameCanvas);
 					$gameCanvas.focus();
 
@@ -120,16 +121,71 @@
                         sdioretsa.RenderSystem(gravityEntities, bounds, cx);
                         sdioretsa.RenderSystem(shipEntities, bounds, cx);
                         sdioretsa.RenderSystem(bulletEntities, bounds, cx);
-                                       
+                        
 						// Render Cleanup
 						
 					}, tickLength*1000);
 				});
 			});
 		</script>
+
+		<style>
+			body {
+				background: #000;
+			}
+			img {
+				/*display: none;*/
+			}
+			.SdioretsaWrapper {
+				position: relative;
+				margin-left: auto;
+				margin-right: auto;
+				width: 640px;
+				height: 360px;
+			}
+			.SdioretsaOverlay {
+				position: absolute;
+				
+				left: 0;
+				top: 0;
+				bottom: 0;
+				right: 0;
+				
+				border: thin dashed #fff;
+			}
+			.SdioretsaText {
+				/*display: none;*/
+				
+				position: absolute;
+				left: 0;
+				right: 0;
+				bottom: 0px;
+				
+				text-align: justify;
+				padding: 0em 1em;
+				
+				color: #ddeedd;
+				background: rgba(10,15,10,0.9);
+				font-family: sans-serif;
+				font-size: 16px;
+				font-weight: bold;
+			}
+			.SdioretsaCanvas {
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+		</style>
 	</head>
 	<body>
-		<canvas id="gameCanvas" width="640" height="360"></canvas>
+		<div class="SdioretsaWrapper">
+			<canvas class="SdioretsaCanvas" width="640" height="360"></canvas>
+			<div class="SdioretsaOverlay">
+				<div class="SdioretsaText">
+					Test text. Test text? Test text!
+				</div>
+			</div>
+		</div>
         <img id="asteroid" src="img/asteroid.png" />
         <img id="spiral" src="img/spiral.png" />
         <img id="bullet" src="img/bullet.png" />
