@@ -51,7 +51,30 @@
                     sdioretsa.spawnAsteroid(2, asteroidEntities, testPosition, document.getElementById("asteroid"));
                     sdioretsa.spawnShip(shipEntities, testPosition2, document.getElementById("ship"));
                     var well = sdioretsa.spawnWell(asteroidEntities, document.getElementById("spiral"));
-                                             
+					
+					var messages = new Entities.EntitySet();
+					
+					var winMessage = new Entities.Entity();
+					winMessage.message = new sdioretsa.Message(
+						"<p>After turning the S.S. Triangle into a collection of space junk, you went back to your old life of hollowing out asteroids and eating freeze-dried paste. Who knows? Maybe you can even make some extra credits by sneaking the S.S. Triangle’s debris into your next ore shipment! It seems like you can rest easy for now…</p>"
+						+ "<p>At least until the next ship comes around, anyways.</p>"
+						+ "<p>YOU WIN</p>"
+					);
+					winMessage.showForState = "won";
+					messages.add(winMessage);
+					
+					var loseMessage = new Entities.Entity();
+					loseMessage.message = new sdioretsa.Message(
+						"<p>You struggled valiantly, but in the end your efforts were for naught. At this point, resistance is futile. You will be assimilated. Or enslaved. Or probed. Or something or other. But you’re definitely broke given that all of your mineable asteroids are now stardust.</p>"
+						+ "<p>Have a good time.</p>"
+						+ "<p>GAME OVER</p>"
+					);
+					loseMessage.showForState = "lost";
+					messages.add(loseMessage);
+					
+					var messageHolder = new sdioretsa.MessageHolder(
+						$(".SdioretsaOverlay"), $(".SdioretsaText"));
+					
                     var tickLength = 1/60;
 					window.setInterval(function() {
 						var cx = applet.context;
@@ -112,6 +135,10 @@
                         
 							sdioretsa.GameWinLossSystem(asteroidEntities, shipEntities, gameState);
 						}
+						
+						// Update Overlays
+						sdioretsa.GameStateMessageSystem(messages, gameState);
+						sdioretsa.MessageBoxSystem(messages, messageHolder);
 						
 						// Render
 						cx.fillStyle = "#000";

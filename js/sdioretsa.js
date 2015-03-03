@@ -10,7 +10,12 @@ _5gon.push(function(loaded) {
 		this.size = size;
 		this.angle = 0;
     }
-	   
+	
+	function Message(html, slot) {
+		this.html = html || "";
+		this.slot = slot || "";
+	}
+	
 	/* Helper Functions */
 
     function PhysicsObject(sprite) {
@@ -94,10 +99,12 @@ _5gon.push(function(loaded) {
 		this.state = "start"; // start, playing, won, lost
 	};
 	
-	function MessageHolder($wrapper, $text) {
+	function MessageHolder($wrapper, $text, slot) {
+		// TODO: does this make more sense as a component?
 		this.$wrapper = $wrapper; // DOM element representing entire textbox
 		this.$text = $text; // DOM element whose contents are the displayed text
 		this.displaying = false;
+		this.slotName = slot || "default";
 	};
 	
 	/* Systems */
@@ -306,7 +313,32 @@ _5gon.push(function(loaded) {
 		}
 	};
 
-	function GameStateMessageSystem(messageSet, gameState, messageBox) {
+	function GameStateMessageSystem(messageSet, gameState, messageSlot) {
+		messageSet.each(function(messageEntity) {
+			if(messageEntity.showForState == gameState.state) {
+				messageEntity.message.slot = (messageSlot || "default");
+			}
+		});
+	};
+
+	function MessageBoxSystem(messageSet, messageBox) {
+		var messageToShow = false;
+		messageSet.each(function(messageEntity) {
+			if(messageEntity.message.slot == messageBox.slotName) {
+				messageToShow = messageEntity.message;
+			}
+		});
+		
+		if(messageToShow) {
+			if(messageBox.displaying != messageToShow) {
+				messageBox.$text.html(messageToShow.html);
+				messageBox.$wrapper.show();
+				messageBox.displaying = messageToShow;
+			}
+		} else {
+			messageBox.$wrapper.hide();
+			messageBox.displaying = false;
+		}
 	};
 	
 	function UpdateSpriteFromPhysicsSystem(set) {
@@ -372,7 +404,11 @@ _5gon.push(function(loaded) {
         BulletCollisionSystem:BulletCollisionSystem,
         ShipCollisionSystem:ShipCollisionSystem,
         GameWinLossSystem: GameWinLossSystem,
-        AsteroidSplitSystem: AsteroidSplitSystem
+        AsteroidSplitSystem: AsteroidSplitSystem,
+        Message: Message,
+        MessageHolder: MessageHolder,
+        GameStateMessageSystem: GameStateMessageSystem,
+        MessageBoxSystem: MessageBoxSystem
 	});
     });
 });
