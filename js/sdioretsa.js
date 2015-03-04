@@ -13,7 +13,7 @@ _5gon.push(function(loaded) {
 	
 	function Message(html, slot) {
 		this.html = html || "";
-		this.slot = slot || "";
+		this.slot = slot || null;
 	}
 	
 	/* Helper Functions */
@@ -92,6 +92,12 @@ _5gon.push(function(loaded) {
         return well;
                                  
     }
+    
+    function showMessage(entity, slot) {
+		entity.timer = new Entities.Timer(); 
+		entity.timer.countdown = 300; //ms
+		entity.message.slot = slot;
+	};
 	   
 	/* State Objects */
 	
@@ -294,8 +300,6 @@ _5gon.push(function(loaded) {
                 var locationA = new Entities.Location(asteroid.location.x + (asteroid.size * Math.cos(angleA)), asteroid.location.y + (asteroid.size * Math.sin(angleA)));
                 
                 var locationB = new Entities.Location(asteroid.location.x + (asteroid.size * Math.cos(angleB)), asteroid.location.y + (asteroid.size * Math.sin(angleB)));
-                   
-                         console.log(asteroid.size/2);
                          
                 spawnAsteroid(asteroid.splits-1, asteroidSet, locationA, asteroid.image, (asteroid.size/2));
                 spawnAsteroid(asteroid.splits-1, asteroidSet, locationB, asteroid.image, (asteroid.size/2));
@@ -338,6 +342,25 @@ _5gon.push(function(loaded) {
 		} else {
 			messageBox.$wrapper.hide();
 			messageBox.displaying = false;
+		}
+	};
+	
+	function MessageDismissSystem(messageSet, mouse, callback) {
+		if(mouse.pressed) {
+			messageSet.each(function(messageEntity) {
+				if(messageEntity.message.slot != null) {
+					var countdown = 0;
+					if(messageEntity.timer) {
+						countdown = messageEntity.timer.countdown;
+					}
+					if(countdown == 0) {
+						messageEntity.message.slot = null;
+						if(callback) {
+							callback(messageEntity);
+						}
+					}
+				}
+			});
 		}
 	};
 	
@@ -408,7 +431,9 @@ _5gon.push(function(loaded) {
         Message: Message,
         MessageHolder: MessageHolder,
         GameStateMessageSystem: GameStateMessageSystem,
-        MessageBoxSystem: MessageBoxSystem
+        MessageBoxSystem: MessageBoxSystem,
+        showMessage: showMessage,
+        MessageDismissSystem:MessageDismissSystem
 	});
     });
 });
