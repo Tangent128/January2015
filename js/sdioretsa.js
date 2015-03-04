@@ -94,8 +94,10 @@ _5gon.push(function(loaded) {
     }
     
     function showMessage(entity, slot) {
-		entity.timer = new Entities.Timer(); 
-		entity.timer.countdown = 300; //ms
+		if(!entity.message.slot) {
+			entity.timer = new Entities.Timer();
+			entity.timer.countdown = 0.3; //seconds
+		}
 		entity.message.slot = slot;
 	};
 	   
@@ -320,7 +322,7 @@ _5gon.push(function(loaded) {
 	function GameStateMessageSystem(messageSet, gameState, messageSlot) {
 		messageSet.each(function(messageEntity) {
 			if(messageEntity.showForState == gameState.state) {
-				messageEntity.message.slot = (messageSlot || "default");
+				showMessage(messageEntity, (messageSlot || "default"));
 			}
 		});
 	};

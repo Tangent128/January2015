@@ -150,6 +150,7 @@
 						}
 						
 						// Update Overlays
+						Entities.TimerTickSystem(messages, tickLength);
 						sdioretsa.GameStateMessageSystem(messages, gameState);
 						sdioretsa.MessageDismissSystem(messages, mouse, function(message) {
 							//console.log(message.nextState);
