@@ -33,61 +33,79 @@
   
 					var tickLength = 1/60;
                     
-                    var gameState = new sdioretsa.GameState();
+                    var gameState;
+                    var asteroidEntities;
+                    var gravityEntities;
+                    var bulletEntities;
+                    var collisionGroup;
+                    var bounds;
+                    var mouse;
+                    var well;
+                    var messages;
+                    var messageHolder;
+                           
+                    function initGame() {
+                    	gameState = new sdioretsa.GameState();
                     
-                    gameState.state = "start";
-                    
-                    var asteroidEntities = new Entities.EntitySet();
-                    var shipEntities = new Entities.EntitySet();
-                    var gravityEntities = new Entities.EntitySet();
-                    var bulletEntities = new Entities.EntitySet();
-                    var collisionGroup = new Entities.EntitySet();
+                    	gameState.state = "start";
+                                                                                                   
+                    	asteroidEntities = new Entities.EntitySet();
+                    	shipEntities = new Entities.EntitySet();
+                    	gravityEntities = new Entities.EntitySet();
+                    	bulletEntities = new Entities.EntitySet();
+                    	collisionGroup = new Entities.EntitySet();
                                                                           
-                    var testPosition = new Entities.Location(200,200);
-                    var testPosition2 = new Entities.Location(500,200);
-                    var bounds = new Breakout.Rectangle(0, 0, applet.width, applet.height);
-                    var mouse = applet.mouse;
+                    	var testPosition = new Entities.Location(200,200);
+                    	var testPosition2 = new Entities.Location(500,200);
+                    	bounds = new Breakout.Rectangle(0, 0, applet.width, applet.height);
+                    	mouse = applet.mouse;
                     
-                    sdioretsa.spawnAsteroid(2, asteroidEntities, testPosition, document.getElementById("asteroid"));
-                    sdioretsa.spawnShip(shipEntities, testPosition2, document.getElementById("ship"));
-                    var well = sdioretsa.spawnWell(asteroidEntities, document.getElementById("spiral"));
+                    	sdioretsa.spawnAsteroid(2, asteroidEntities, testPosition, document.getElementById("asteroid"));
+                    	sdioretsa.spawnShip(shipEntities, testPosition2, document.getElementById("ship"));
+                    	well = sdioretsa.spawnWell(asteroidEntities, document.getElementById("spiral"));
 					
-					var messages = new Entities.EntitySet();
+						messages = new Entities.EntitySet();
 					
-					var startMessage = new Entities.Entity();
-					startMessage.message = new sdioretsa.Message(
+						var startMessage = new Entities.Entity();
+						startMessage.message = new sdioretsa.Message(
 						"<p>You are an intrepid spacer of the Erehwon Asteroid Fields. Life is pretty good between hollowing out asteroids for their rich ore-y innards and the freeze-dried meals.</p>"
 						+ "<p>Oh who are we kidding? Life sucks. It’s claustrophobic, the food bites, and you need to put up panels over the windows just to sleep properly at what passes for “night”. And it’s just gotten significantly worse now that the S.S. Triangle has shown up to launch a raid.</p>"
 						+ "<p>Being types who stand to lose a lot here, it’s time to fight back with what you can… Which would be with some good-old fashioned space rocks and some gravity wells to launch them with.</p>"
 						+ "<p>Objective: Click to place a gravity well and destroy the S.S. Triangle with your redirected asteroids before they are vaporized."
-					);
-					startMessage.showForState = "start";
-					startMessage.nextState = "playing";
-					messages.add(startMessage);
+						);
+						startMessage.showForState = "start";
+						startMessage.nextState = "playing";
+						messages.add(startMessage);
 					
-					var winMessage = new Entities.Entity();
-					winMessage.message = new sdioretsa.Message(
-						"<p>After turning the S.S. Triangle into a collection of space junk, you went back to your old life of hollowing out asteroids and eating freeze-dried paste. Who knows? Maybe you can even make some extra credits by sneaking the S.S. Triangle’s debris into your next ore shipment! It seems like you can rest easy for now…</p>"
+						var winMessage = new Entities.Entity();
+						winMessage.message = new sdioretsa.Message(
+                        "<p>After turning the S.S. Triangle into a collection of space junk, you went back to your old life of hollowing out asteroids and eating freeze-dried paste. Who knows? Maybe you can even make some extra credits by sneaking the S.S. Triangle’s debris into your next ore shipment! It seems like you can rest easy for now…</p>"
 						+ "<p>At least until the next ship comes around, anyways.</p>"
 						+ "<p>YOU WIN</p>"
-					);
-					winMessage.showForState = "won";
-					winMessage.nextState = "start";
-					messages.add(winMessage);
+						);
+						winMessage.showForState = "won";
+						winMessage.nextState = "start";
+						messages.add(winMessage);
 					
-					var loseMessage = new Entities.Entity();
-					loseMessage.message = new sdioretsa.Message(
+						var loseMessage = new Entities.Entity();
+						loseMessage.message = new sdioretsa.Message(
 						"<p>You struggled valiantly, but in the end your efforts were for naught. At this point, resistance is futile. You will be assimilated. Or enslaved. Or probed. Or something or other. But you’re definitely broke given that all of your mineable asteroids are now stardust.</p>"
 						+ "<p>Have a good time.</p>"
 						+ "<p>GAME OVER</p>"
-					);
-					loseMessage.showForState = "lost";
-					loseMessage.nextState = "start";
-					messages.add(loseMessage);
+						);
+						loseMessage.showForState = "lost";
+						loseMessage.nextState = "start";
+						messages.add(loseMessage);
 					
-					var messageHolder = new sdioretsa.MessageHolder(
+						messageHolder = new sdioretsa.MessageHolder(
 						$(".SdioretsaOverlay"), $(".SdioretsaText"));
 					
+                    }
+                              
+                    function resetGame() {
+                        initGame();
+                    }
+                    initGame();
                     var tickLength = 1/60;
 					window.setInterval(function() {
 						var cx = applet.context;
@@ -155,7 +173,7 @@
 						sdioretsa.MessageDismissSystem(messages, mouse, function(message) {
 							//console.log(message.nextState);
 							if(message.nextState == "start") {
-								//resetGame();
+								resetGame();
 							}
 							gameState.state = message.nextState;
 						});
